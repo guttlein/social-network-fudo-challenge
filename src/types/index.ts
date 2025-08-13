@@ -1,3 +1,4 @@
+// types.ts
 export interface Post {
   id: string;
   name: string;
@@ -13,4 +14,9 @@ export interface Comment {
   content: string;
   createdAt: string;
   parentId: string | null;
+}
+
+// Comentario con hijos
+export interface CommentNode extends Comment {
+  children: CommentNode[];
 }

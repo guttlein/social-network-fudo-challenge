@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../api";
@@ -12,7 +11,6 @@ export default function Home() {
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
 
-  // Use React Query to fetch posts
   const {
     data: posts,
     isLoading,
@@ -23,13 +21,20 @@ export default function Home() {
   });
 
   const handleCreatePost = () => {
-    createPost({ content: newPostContent, name: "Demo user", avatar: "https://i.pravatar.cc/150?u=demo" });
-    setNewPostContent(""); // Clear input after creating post
-  }
+    createPost({
+      content: newPostContent,
+      name: "Demo user",
+      avatar: "https://i.pravatar.cc/150?u=demo",
+    });
+    setNewPostContent("");
+  };
 
   const handleDeletePost = (postId: string) => {
     deletePost(postId);
-  }
+  };
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleString();
 
   if (isLoading) return <p className="text-center mt-10">Loading posts...</p>;
   if (error)
@@ -69,16 +74,24 @@ export default function Home() {
       {/* Posts list */}
       <div className="space-y-4">
         {posts?.map((post) => (
-          <div key={post.id} className="border p-4 rounded shadow-sm bg-white">
+          <div
+            key={post.id}
+            className="border p-4 rounded shadow-sm bg-white"
+          >
             <div className="flex items-center mb-2">
               <img
                 src={post.avatar}
                 alt={post.name}
                 className="w-8 h-8 rounded-full mr-2"
               />
-              <span className="font-semibold">{post.name}</span>
+              <div>
+                <span className="font-semibold">{post.name}</span>
+                <p className="text-xs text-gray-500">
+                  {formatDate(post.createdAt)}
+                </p>
+              </div>
             </div>
-            <p>{post.content}</p>
+            <p className="mb-2">{post.content}</p>
 
             <div className="flex justify-between items-center mt-2">
               <Link

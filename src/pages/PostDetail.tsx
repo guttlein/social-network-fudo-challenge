@@ -30,14 +30,31 @@ export default function PostDetail() {
 
   const commentTree = buildCommentTree(comments);
 
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleString();
+
   const handleCreateComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCommentContent.trim()) return;
 
     createComment(
-      { content: newCommentContent, name: "Demo User", avatar: "https://i.pravatar.cc/150?u=demo" },
+      {
+        content: newCommentContent,
+        name: "Demo User",
+        avatar: "https://i.pravatar.cc/150?u=demo",
+        parentId: null,
+      },
       { onSuccess: () => setNewCommentContent("") }
     );
+  };
+
+  const handleReply = (content: string, parentId: string) => {
+    createComment({
+      content,
+      name: "Demo User",
+      avatar: "https://i.pravatar.cc/150?u=demo",
+      parentId,
+    });
   };
 
   const handleDeleteComment = (commentId: string) => {
@@ -58,7 +75,10 @@ export default function PostDetail() {
       <div className="border p-4 rounded shadow-sm bg-white mt-4">
         <div className="flex items-center mb-2">
           <img src={post?.avatar} alt={post?.name} className="w-8 h-8 rounded-full mr-2" />
-          <span className="font-semibold">{post?.name}</span>
+          <div>
+            <span className="font-semibold">{post?.name}</span>
+            <p className="text-xs text-gray-500">{formatDate(post.createdAt)}</p>
+          </div>
         </div>
         <p>{post?.content}</p>
       </div>
@@ -66,6 +86,7 @@ export default function PostDetail() {
       <h2 className="text-xl font-bold mt-6 mb-2">Comments</h2>
       {comments.length === 0 && <p>No comments yet</p>}
 
+      {/* Root comment */}
       <form onSubmit={handleCreateComment} className="mb-4">
         <textarea
           className="w-full border rounded p-2 mb-2"
@@ -90,7 +111,9 @@ export default function PostDetail() {
             key={comment.id}
             comment={comment}
             onDelete={handleDeleteComment}
+            onReply={handleReply}
             isDeleting={isDeleting}
+            isCreating={isCreating}
           />
         ))}
       </div>

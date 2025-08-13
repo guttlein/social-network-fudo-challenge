@@ -1,4 +1,3 @@
-// src/hooks.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Post } from "../types";
 import { createPost, deletePost } from "../api";
