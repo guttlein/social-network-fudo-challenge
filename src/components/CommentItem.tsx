@@ -1,6 +1,17 @@
 import { useState } from "react";
 import type { CommentNode } from "../types";
 
+interface CommentItemProps {
+  comment: CommentNode;
+  onDelete: (commentId: string) => void;
+  onReply: (content: string, parentId: string) => void;
+  onUpdate: (commentId: string, content: string) => void;
+  isDeleting?: boolean;
+  isCreating?: boolean;
+  isUpdating?: boolean;
+  level?: number;
+}
+
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleString(undefined, {
     dateStyle: "medium",
@@ -17,25 +28,20 @@ const levelColors = [
   "border-red-400",
 ];
 
-interface CommentItemProps {
-  comment: CommentNode;
-  onDelete: (commentId: string) => void;
-  onReply: (content: string, parentId: string) => void;
-  isDeleting?: boolean;
-  isCreating?: boolean;
-  level?: number;
-}
-
 export function CommentItem({
   comment,
   onDelete,
   onReply,
+  onUpdate,
   isDeleting,
   isCreating,
+  isUpdating,
   level = 0,
 }: CommentItemProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(comment.content);
 
   const handleReplySubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +49,18 @@ export function CommentItem({
     onReply(replyContent, comment.id);
     setReplyContent("");
     setIsReplying(false);
+  };
+
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editContent.trim()) return;
+    onUpdate(comment.id, editContent);
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditContent(comment.content);
   };
 
   const borderColor = levelColors[level % levelColors.length];
@@ -65,7 +83,35 @@ export function CommentItem({
             </div>
           </div>
 
-          <p className="mt-1">{comment.content}</p>
+          {isEditing ? (
+            <form onSubmit={handleEditSubmit} className="mt-2">
+              <textarea
+                className="w-full border rounded p-2 mb-2"
+                placeholder="Edit your comment..."
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                rows={2}
+              />
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={isUpdating}
+                  className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 disabled:opacity-50 text-sm"
+                >
+                  {isUpdating ? "Saving..." : "Save"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <p className="mt-1">{comment.content}</p>
+          )}
 
           {/* Botones */}
           <div className="mt-2 flex gap-3 text-sm">
@@ -74,6 +120,12 @@ export function CommentItem({
               className="text-blue-600 hover:underline"
             >
               Reply
+            </button>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="text-blue-600 hover:underline"
+            >
+              Edit
             </button>
             <button
               onClick={() => onDelete(comment.id)}
@@ -86,12 +138,13 @@ export function CommentItem({
 
           {isReplying && (
             <form onSubmit={handleReplySubmit} className="mt-2">
-              <textarea
-                className="w-full border rounded p-2 mb-1"
-                rows={2}
-                value={replyContent}
-                onChange={(e) => setReplyContent(e.target.value)}
-              />
+                          <textarea
+              className="w-full border rounded p-2 mb-1"
+              placeholder="Write your reply..."
+              rows={2}
+              value={replyContent}
+              onChange={(e) => setReplyContent(e.target.value)}
+            />
               <button
                 type="submit"
                 disabled={isCreating}
@@ -109,8 +162,10 @@ export function CommentItem({
                 comment={child}
                 onDelete={onDelete}
                 onReply={onReply}
+                onUpdate={onUpdate}
                 isDeleting={isDeleting}
                 isCreating={isCreating}
+                isUpdating={isUpdating}
                 level={level + 1}
               />
             ))}

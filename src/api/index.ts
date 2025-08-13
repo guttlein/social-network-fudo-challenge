@@ -47,6 +47,14 @@ export const deletePost = async (postId: string): Promise<Post> => {
   return data;
 };
 
+/**
+ * Update a post by ID.
+ */
+export const updatePost = async (postId: string, post: Partial<Post>): Promise<Post> => {
+  const { data } = await axios.put<Post>(`${API_URL}/post/${postId}`, post);
+  return data;
+};
+
 // ------- COMMENTS -------
 
 /**
@@ -86,6 +94,21 @@ export const deleteComment = async (
 ): Promise<Comment> => {
   const { data } = await axios.delete<Comment>(
     `${API_URL}/post/${postId}/comment/${commentId}`
+  );
+  return data;
+};
+
+/**
+ * Update a comment by ID.
+ */
+export const updateComment = async (
+  postId: string,
+  commentId: string,
+  comment: Partial<Comment>
+): Promise<Comment> => {
+  const { data } = await axios.put<Comment>(
+    `${API_URL}/post/${postId}/comment/${commentId}`,
+    comment
   );
   return data;
 };

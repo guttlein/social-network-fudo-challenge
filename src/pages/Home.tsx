@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../api";
 import type { Post } from "../types";
-import { useCreatePost, useDeletePost } from "../hooks/usePosts";
+import { useCreatePost, useDeletePost, useUpdatePost } from "../hooks/usePosts";
 
 export default function Home() {
   const [newPostContent, setNewPostContent] = useState("");
+  const [editingPost, setEditingPost] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState("");
 
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
+  const { mutate: updatePost, isPending: isUpdating } = useUpdatePost();
 
   const {
     data: posts,
@@ -31,6 +34,22 @@ export default function Home() {
 
   const handleDeletePost = (postId: string) => {
     deletePost(postId);
+  };
+
+  const handleEditPost = (post: Post) => {
+    setEditingPost(post.id);
+    setEditContent(post.content);
+  };
+
+  const handleUpdatePost = (postId: string) => {
+    updatePost({ postId, post: { content: editContent } });
+    setEditingPost(null);
+    setEditContent("");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPost(null);
+    setEditContent("");
   };
 
   const formatDate = (dateString: string) =>
@@ -91,7 +110,33 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <p className="mb-2">{post.content}</p>
+            {editingPost === post.id ? (
+              <div className="mb-2">
+                <textarea
+                  className="w-full border rounded p-2 mb-2"
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  rows={3}
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleUpdatePost(post.id)}
+                    disabled={isUpdating}
+                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 disabled:opacity-50 text-sm"
+                  >
+                    {isUpdating ? "Saving..." : "Save"}
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="mb-2">{post.content}</p>
+            )}
 
             <div className="flex justify-between items-center mt-2">
               <Link
@@ -101,13 +146,21 @@ export default function Home() {
                 See Details
               </Link>
 
-              <button
-                onClick={() => handleDeletePost(post.id)}
-                disabled={isDeleting}
-                className="text-red-600 hover:underline disabled:opacity-50 text-sm"
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEditPost(post)}
+                  className="text-blue-600 hover:underline text-sm"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeletePost(post.id)}
+                  disabled={isDeleting}
+                  className="text-red-600 hover:underline disabled:opacity-50 text-sm"
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
             </div>
           </div>
         ))}

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getSinglePost, getComments } from "../api";
 import type { Post, Comment } from "../types";
-import { useCreateComment, useDeleteComment } from "../hooks/useComments";
+import { useCreateComment, useDeleteComment, useUpdateComment } from "../hooks/useComments";
 import { buildCommentTree } from "../utils/buildCommentTree";
 import { CommentItem } from "../components/CommentItem";
 
@@ -15,6 +15,7 @@ export default function PostDetail() {
 
   const { mutate: createComment, isPending: isCreating } = useCreateComment(postId);
   const { mutate: deleteComment, isPending: isDeleting } = useDeleteComment(postId);
+  const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(postId);
 
   const { data: post, isLoading: loadingPost, error: errorPost } = useQuery<Post | null, Error>({
     queryKey: ["post", postId],
@@ -59,6 +60,10 @@ export default function PostDetail() {
 
   const handleDeleteComment = (commentId: string) => {
     deleteComment(commentId);
+  };
+
+  const handleUpdateComment = (commentId: string, content: string) => {
+    updateComment({ commentId, comment: { content } });
   };
 
   if (loadingPost || loadingComments) return <p className="text-center mt-10">Loading...</p>;
@@ -112,8 +117,10 @@ export default function PostDetail() {
             comment={comment}
             onDelete={handleDeleteComment}
             onReply={handleReply}
+            onUpdate={handleUpdateComment}
             isDeleting={isDeleting}
             isCreating={isCreating}
+            isUpdating={isUpdating}
           />
         ))}
       </div>

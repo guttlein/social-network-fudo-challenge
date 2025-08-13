@@ -1,7 +1,7 @@
 // src/hooks.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Comment } from "../types";
-import { createComment, deleteComment } from "../api";
+import { createComment, deleteComment, updateComment } from "../api";
 
 /**
  * Hook to create a new comment for a given post ID.
@@ -36,6 +36,27 @@ export function useDeleteComment(postId: string) {
       // Update the comments cache by filtering out the deleted comment by ID
       queryClient.setQueryData<Comment[]>(["comments", postId], (oldComments = []) =>
         oldComments.filter(comment => comment.id !== deletedComment.id)
+      );
+    },
+  });
+}
+
+/**
+ * Hook to update a comment by its ID from a given post ID.
+ * On success, updates the comments cache for that post.
+ */
+export function useUpdateComment(postId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ commentId, comment }: { commentId: string; comment: Partial<Comment> }) =>
+      updateComment(postId, commentId, comment),
+    onSuccess: (updatedComment) => {
+      // Update the comments cache by replacing the updated comment
+      queryClient.setQueryData<Comment[]>(["comments", postId], (oldComments = []) =>
+        oldComments.map(comment => 
+          comment.id === updatedComment.id ? updatedComment : comment
+        )
       );
     },
   });
