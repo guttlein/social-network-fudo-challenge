@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "../api";
-import type { Post } from "../types";
-import { useCreatePost, useDeletePost, useUpdatePost } from "../hooks/usePosts";
+import { getPosts } from "@/shared/api";
+import type { Post } from "@/shared/types";
+import { useCreatePost, useDeletePost, useUpdatePost } from "@/features/posts";
 
 export default function Home() {
   const [newPostContent, setNewPostContent] = useState("");

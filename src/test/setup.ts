@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom'
+import 'vitest/globals'
 
 // Mock de IntersectionObserver para tests
 Object.defineProperty(window, 'IntersectionObserver', {

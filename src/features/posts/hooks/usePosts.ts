@@ -1,11 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Post } from "../types";
-import { createPost, deletePost, updatePost } from "../api";
+import type { Post } from "@/shared/types";
+import { createPost, deletePost, updatePost } from "@/shared/api";
 
-/**
- * Hook to create a new post.
- * On success, invalidates the "posts" query to refresh the post list.
- */
 export function useCreatePost() {
   const queryClient = useQueryClient();
 
@@ -17,10 +13,6 @@ export function useCreatePost() {
   });
 }
 
-/**
- * Hook to delete a post by ID.
- * On success, invalidates the "posts" query to refresh the post list.
- */
 export function useDeletePost() {
   const queryClient = useQueryClient();
 
@@ -32,10 +24,6 @@ export function useDeletePost() {
   });
 }
 
-/**
- * Hook to update a post by ID.
- * On success, invalidates both "posts" and the specific post queries.
- */
 export function useUpdatePost() {
   const queryClient = useQueryClient();
 

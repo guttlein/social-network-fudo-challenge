@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { CommentNode } from "../types";
+import type { CommentNode } from "../../types";
 
 interface CommentItemProps {
   comment: CommentNode;
@@ -103,74 +103,85 @@ export function CommentItem({
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 text-sm"
+                  className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 text-sm"
                 >
                   Cancel
                 </button>
               </div>
             </form>
           ) : (
-            <p className="mt-1">{comment.content}</p>
+            <p className="mt-1 text-gray-800">{comment.content}</p>
           )}
 
-          {/* Botones */}
-          <div className="mt-2 flex gap-3 text-sm">
+          <div className="flex gap-2 mt-2">
             <button
               onClick={() => setIsReplying(!isReplying)}
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 hover:text-blue-800 text-sm"
             >
               Reply
             </button>
             <button
               onClick={() => setIsEditing(true)}
-              className="text-blue-600 hover:underline"
+              className="text-green-600 hover:text-green-800 text-sm"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete(comment.id)}
               disabled={isDeleting}
-              className="text-red-600 hover:underline disabled:opacity-50"
+              className="text-red-600 hover:text-red-800 text-sm disabled:opacity-50"
             >
               {isDeleting ? "Deleting..." : "Delete"}
             </button>
           </div>
 
           {isReplying && (
-            <form onSubmit={handleReplySubmit} className="mt-2">
-                          <textarea
-              className="w-full border rounded p-2 mb-1"
-              placeholder="Write your reply..."
-              rows={2}
-              value={replyContent}
-              onChange={(e) => setReplyContent(e.target.value)}
-            />
-              <button
-                type="submit"
-                disabled={isCreating}
-                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                {isCreating ? "Posting..." : "Reply"}
-              </button>
+            <form onSubmit={handleReplySubmit} className="mt-3">
+              <textarea
+                className="w-full border rounded p-2 mb-2"
+                placeholder="Write a reply..."
+                value={replyContent}
+                onChange={(e) => setReplyContent(e.target.value)}
+                rows={2}
+              />
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={isCreating}
+                  className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50 text-sm"
+                >
+                  {isCreating ? "Posting..." : "Post Reply"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsReplying(false)}
+                  className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           )}
-
-          {comment.children &&
-            comment.children.map((child) => (
-              <CommentItem
-                key={child.id}
-                comment={child}
-                onDelete={onDelete}
-                onReply={onReply}
-                onUpdate={onUpdate}
-                isDeleting={isDeleting}
-                isCreating={isCreating}
-                isUpdating={isUpdating}
-                level={level + 1}
-              />
-            ))}
         </div>
       </div>
+
+      {comment.children && comment.children.length > 0 && (
+        <div className="mt-4 space-y-4">
+          {comment.children.map((child) => (
+            <CommentItem
+              key={child.id}
+              comment={child}
+              onDelete={onDelete}
+              onReply={onReply}
+              onUpdate={onUpdate}
+              isDeleting={isDeleting}
+              isCreating={isCreating}
+              isUpdating={isUpdating}
+              level={level + 1}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

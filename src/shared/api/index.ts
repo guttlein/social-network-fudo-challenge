@@ -1,113 +1,80 @@
 import axios from "axios";
 import type { Post, Comment } from "../types";
+import { API_CONFIG } from "../constants";
 
-const API_URL = "https://665de6d7e88051d60408c32d.mockapi.io";
+// Posts API functions
 
-// ------- POSTS -------
-
-/**
- * Fetch all posts.
- */
 export const getPosts = async (): Promise<Post[]> => {
-  const { data } = await axios.get<Post[]>(`${API_URL}/post`);
+  const { data } = await axios.get<Post[]>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`);
   return data;
 };
 
-/**
- * Fetch a single post by ID.
- * Returns null if post is not found (404).
- */
 export const getSinglePost = async (postId: string): Promise<Post | null> => {
   try {
-    const { data } = await axios.get<Post>(`${API_URL}/post/${postId}`);
+    const { data } = await axios.get<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`);
     return data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      // Return null if post not found instead of throwing
       return null;
     }
     throw error;
   }
 };
 
-/**
- * Create a new post.
- */
 export const createPost = async (post: Partial<Post>): Promise<Post> => {
-  const { data } = await axios.post<Post>(`${API_URL}/post`, post);
+  const { data } = await axios.post<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`, post);
   return data;
 };
 
-/**
- * Delete a post by ID.
- * Throws if post not found or error occurs.
- */
 export const deletePost = async (postId: string): Promise<Post> => {
-  const { data } = await axios.delete<Post>(`${API_URL}/post/${postId}`);
+  const { data } = await axios.delete<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`);
   return data;
 };
 
-/**
- * Update a post by ID.
- */
 export const updatePost = async (postId: string, post: Partial<Post>): Promise<Post> => {
-  const { data } = await axios.put<Post>(`${API_URL}/post/${postId}`, post);
+  const { data } = await axios.put<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`, post);
   return data;
 };
 
-// ------- COMMENTS -------
+// Comments API functions
 
-/**
- * Fetch comments for a post.
- * Returns empty array if no comments found (404).
- */
 export const getComments = async (postId: string): Promise<Comment[]> => {
   try {
-    const { data } = await axios.get<Comment[]>(`${API_URL}/post/${postId}/comment`);
+    const { data } = await axios.get<Comment[]>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`);
     return data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      // Treat 404 as no comments
       return [];
     }
     throw error;
   }
 };
 
-/**
- * Create a comment for a post.
- */
 export const createComment = async (
   postId: string,
   comment: Partial<Comment>
 ): Promise<Comment> => {
-  const { data } = await axios.post<Comment>(`${API_URL}/post/${postId}/comment`, comment);
+  const { data } = await axios.post<Comment>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`, comment);
   return data;
 };
 
-/**
- * Delete a comment by ID.
- */
 export const deleteComment = async (
   postId: string,
   commentId: string
 ): Promise<Comment> => {
   const { data } = await axios.delete<Comment>(
-    `${API_URL}/post/${postId}/comment/${commentId}`
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}/${commentId}`
   );
   return data;
 };
 
-/**
- * Update a comment by ID.
- */
 export const updateComment = async (
   postId: string,
   commentId: string,
   comment: Partial<Comment>
 ): Promise<Comment> => {
   const { data } = await axios.put<Comment>(
-    `${API_URL}/post/${postId}/comment/${commentId}`,
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}/${commentId}`,
     comment
   );
   return data;

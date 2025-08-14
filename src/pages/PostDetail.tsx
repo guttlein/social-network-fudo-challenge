@@ -1,11 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getSinglePost, getComments } from "../api";
-import type { Post, Comment } from "../types";
-import { useCreateComment, useDeleteComment, useUpdateComment } from "../hooks/useComments";
-import { buildCommentTree } from "../utils/buildCommentTree";
-import { CommentItem } from "../components/CommentItem";
+import { getSinglePost, getComments } from "@/shared/api";
+import type { Post, Comment } from "@/shared/types";
+import { useCreateComment, useDeleteComment, useUpdateComment } from "@/features/comments";
+import { buildCommentTree } from "@/shared/utils/buildCommentTree";
+import { CommentItem } from "@/shared/components/molecules/CommentItem";
 
 export default function PostDetail() {
   const { id } = useParams<{ id: string }>();
