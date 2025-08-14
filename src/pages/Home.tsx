@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "@/shared/api";
-import type { Post } from "@/shared/types";
-import { useCreatePost, useDeletePost, useUpdatePost } from "@/features/posts";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getPosts } from '@/shared/api';
+import type { Post } from '@/shared/types';
+import { useCreatePost, useDeletePost, useUpdatePost } from '@/features/posts';
 
 export default function Home() {
-  const [newPostContent, setNewPostContent] = useState("");
+  const [newPostContent, setNewPostContent] = useState('');
   const [editingPost, setEditingPost] = useState<string | null>(null);
-  const [editContent, setEditContent] = useState("");
+  const [editContent, setEditContent] = useState('');
 
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
@@ -19,17 +19,17 @@ export default function Home() {
     isLoading,
     error,
   } = useQuery<Post[], Error>({
-    queryKey: ["posts"],
+    queryKey: ['posts'],
     queryFn: getPosts,
   });
 
   const handleCreatePost = () => {
     createPost({
       content: newPostContent,
-      name: "Demo user",
-      avatar: "https://i.pravatar.cc/150?u=demo",
+      name: 'Demo user',
+      avatar: 'https://i.pravatar.cc/150?u=demo',
     });
-    setNewPostContent("");
+    setNewPostContent('');
   };
 
   const handleDeletePost = (postId: string) => {
@@ -44,12 +44,12 @@ export default function Home() {
   const handleUpdatePost = (postId: string) => {
     updatePost({ postId, post: { content: editContent } });
     setEditingPost(null);
-    setEditContent("");
+    setEditContent('');
   };
 
   const handleCancelEdit = () => {
     setEditingPost(null);
-    setEditContent("");
+    setEditContent('');
   };
 
   const formatDate = (dateString: string) =>
@@ -67,7 +67,7 @@ export default function Home() {
 
       {/* Form for new posts */}
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           if (!newPostContent.trim()) return;
           handleCreatePost();
@@ -78,7 +78,7 @@ export default function Home() {
           className="w-full border rounded p-2 mb-2"
           placeholder="New post..."
           value={newPostContent}
-          onChange={(e) => setNewPostContent(e.target.value)}
+          onChange={e => setNewPostContent(e.target.value)}
           rows={3}
         />
         <button
@@ -86,17 +86,14 @@ export default function Home() {
           disabled={isCreating}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
         >
-          {isCreating ? "Creating..." : "Create Post"}
+          {isCreating ? 'Creating...' : 'Create Post'}
         </button>
       </form>
 
       {/* Posts list */}
       <div className="space-y-4">
-        {posts?.map((post) => (
-          <div
-            key={post.id}
-            className="border p-4 rounded shadow-sm bg-white"
-          >
+        {posts?.map(post => (
+          <div key={post.id} className="border p-4 rounded shadow-sm bg-white">
             <div className="flex items-center mb-2">
               <img
                 src={post.avatar}
@@ -115,7 +112,7 @@ export default function Home() {
                 <textarea
                   className="w-full border rounded p-2 mb-2"
                   value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
+                  onChange={e => setEditContent(e.target.value)}
                   rows={3}
                 />
                 <div className="flex gap-2">
@@ -124,7 +121,7 @@ export default function Home() {
                     disabled={isUpdating}
                     className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 disabled:opacity-50 text-sm"
                   >
-                    {isUpdating ? "Saving..." : "Save"}
+                    {isUpdating ? 'Saving...' : 'Save'}
                   </button>
                   <button
                     onClick={handleCancelEdit}
@@ -158,7 +155,7 @@ export default function Home() {
                   disabled={isDeleting}
                   className="text-red-600 hover:underline disabled:opacity-50 text-sm"
                 >
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
               </div>
             </div>

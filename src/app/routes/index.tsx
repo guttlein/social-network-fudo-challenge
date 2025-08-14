@@ -1,15 +1,15 @@
-import { createBrowserRouter } from "react-router-dom";
-import Home from "@/pages/Home";
-import PostDetail from "@/pages/PostDetail";
+import { createBrowserRouter } from 'react-router-dom';
+import Home from '@/pages/Home';
+import PostDetail from '@/pages/PostDetail';
 
 // Application router configuration
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Home />,
   },
   {
-    path: "/post/:id",
+    path: '/post/:id',
     element: <PostDetail />,
   },
 ]);

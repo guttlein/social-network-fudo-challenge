@@ -1,4 +1,4 @@
-import type { Comment, CommentNode } from "../types";
+import type { Comment, CommentNode } from '../types';
 
 // Builds tree structure from flat array of comments
 export function buildCommentTree(comments: Comment[]): CommentNode[] {
@@ -6,12 +6,12 @@ export function buildCommentTree(comments: Comment[]): CommentNode[] {
   const roots: CommentNode[] = [];
 
   // Create CommentNode objects with empty children arrays
-  comments.forEach((comment) => {
+  comments.forEach(comment => {
     map[comment.id] = { ...comment, children: [] };
   });
 
   // Build the tree structure
-  comments.forEach((comment) => {
+  comments.forEach(comment => {
     if (comment.parentId) {
       // Add child comment to parent's children array
       map[comment.parentId]?.children.push(map[comment.id]);

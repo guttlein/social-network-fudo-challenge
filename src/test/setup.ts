@@ -1,5 +1,3 @@
-import 'vitest/globals'
-
 // Mock de IntersectionObserver para tests
 Object.defineProperty(window, 'IntersectionObserver', {
   writable: true,
@@ -9,8 +7,8 @@ Object.defineProperty(window, 'IntersectionObserver', {
     disconnect() {}
     observe() {}
     unobserve() {}
-  }
-})
+  },
+});
 
 // Mock de ResizeObserver para tests
 Object.defineProperty(window, 'ResizeObserver', {
@@ -21,5 +19,5 @@ Object.defineProperty(window, 'ResizeObserver', {
     disconnect() {}
     observe() {}
     unobserve() {}
-  }
-})
+  },
+});

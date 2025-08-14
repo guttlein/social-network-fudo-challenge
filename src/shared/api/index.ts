@@ -1,17 +1,21 @@
-import axios from "axios";
-import type { Post, Comment } from "../types";
-import { API_CONFIG } from "../constants";
+import axios from 'axios';
+import type { Post, Comment } from '../types';
+import { API_CONFIG } from '../constants';
 
 // Posts API functions
 
 export const getPosts = async (): Promise<Post[]> => {
-  const { data } = await axios.get<Post[]>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`);
+  const { data } = await axios.get<Post[]>(
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`
+  );
   return data;
 };
 
 export const getSinglePost = async (postId: string): Promise<Post | null> => {
   try {
-    const { data } = await axios.get<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`);
+    const { data } = await axios.get<Post>(
+      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`
+    );
     return data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -22,17 +26,28 @@ export const getSinglePost = async (postId: string): Promise<Post | null> => {
 };
 
 export const createPost = async (post: Partial<Post>): Promise<Post> => {
-  const { data } = await axios.post<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`, post);
+  const { data } = await axios.post<Post>(
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`,
+    post
+  );
   return data;
 };
 
 export const deletePost = async (postId: string): Promise<Post> => {
-  const { data } = await axios.delete<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`);
+  const { data } = await axios.delete<Post>(
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`
+  );
   return data;
 };
 
-export const updatePost = async (postId: string, post: Partial<Post>): Promise<Post> => {
-  const { data } = await axios.put<Post>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`, post);
+export const updatePost = async (
+  postId: string,
+  post: Partial<Post>
+): Promise<Post> => {
+  const { data } = await axios.put<Post>(
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}`,
+    post
+  );
   return data;
 };
 
@@ -40,7 +55,9 @@ export const updatePost = async (postId: string, post: Partial<Post>): Promise<P
 
 export const getComments = async (postId: string): Promise<Comment[]> => {
   try {
-    const { data } = await axios.get<Comment[]>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`);
+    const { data } = await axios.get<Comment[]>(
+      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`
+    );
     return data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -54,7 +71,10 @@ export const createComment = async (
   postId: string,
   comment: Partial<Comment>
 ): Promise<Comment> => {
-  const { data } = await axios.post<Comment>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`, comment);
+  const { data } = await axios.post<Comment>(
+    `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`,
+    comment
+  );
   return data;
 };
 

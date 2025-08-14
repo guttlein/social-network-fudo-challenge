@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -13,19 +13,19 @@ export default defineConfig({
         'src/test/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/coverage/**'
+        '**/coverage/**',
       ],
       thresholds: {
         lines: 70,
         functions: 70,
         branches: 70,
-        statements: 70
-      }
-    }
+        statements: 70,
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': './src'
-    }
-  }
-})
+      '@': './src',
+    },
+  },
+});

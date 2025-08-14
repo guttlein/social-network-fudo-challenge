@@ -1,30 +1,45 @@
-import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getSinglePost, getComments } from "@/shared/api";
-import type { Post, Comment } from "@/shared/types";
-import { useCreateComment, useDeleteComment, useUpdateComment } from "@/features/comments";
-import { buildCommentTree } from "@/shared/utils/buildCommentTree";
-import { CommentItem } from "@/shared/components/molecules/CommentItem";
+import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getSinglePost, getComments } from '@/shared/api';
+import type { Post, Comment } from '@/shared/types';
+import {
+  useCreateComment,
+  useDeleteComment,
+  useUpdateComment,
+} from '@/features/comments';
+import { buildCommentTree } from '@/shared/utils/buildCommentTree';
+import { CommentItem } from '@/shared/components/molecules/CommentItem';
 
 export default function PostDetail() {
   const { id } = useParams<{ id: string }>();
   const postId = id!;
 
-  const [newCommentContent, setNewCommentContent] = useState("");
+  const [newCommentContent, setNewCommentContent] = useState('');
 
-  const { mutate: createComment, isPending: isCreating } = useCreateComment(postId);
-  const { mutate: deleteComment, isPending: isDeleting } = useDeleteComment(postId);
-  const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(postId);
+  const { mutate: createComment, isPending: isCreating } =
+    useCreateComment(postId);
+  const { mutate: deleteComment, isPending: isDeleting } =
+    useDeleteComment(postId);
+  const { mutate: updateComment, isPending: isUpdating } =
+    useUpdateComment(postId);
 
-  const { data: post, isLoading: loadingPost, error: errorPost } = useQuery<Post | null, Error>({
-    queryKey: ["post", postId],
+  const {
+    data: post,
+    isLoading: loadingPost,
+    error: errorPost,
+  } = useQuery<Post | null, Error>({
+    queryKey: ['post', postId],
     queryFn: () => getSinglePost(postId),
     enabled: !!postId,
   });
 
-  const { data: comments = [], isLoading: loadingComments, error: errorComments } = useQuery<Comment[], Error>({
-    queryKey: ["comments", postId],
+  const {
+    data: comments = [],
+    isLoading: loadingComments,
+    error: errorComments,
+  } = useQuery<Comment[], Error>({
+    queryKey: ['comments', postId],
     queryFn: () => getComments(postId),
     enabled: !!postId,
   });
@@ -41,19 +56,19 @@ export default function PostDetail() {
     createComment(
       {
         content: newCommentContent,
-        name: "Demo User",
-        avatar: "https://i.pravatar.cc/150?u=demo",
+        name: 'Demo User',
+        avatar: 'https://i.pravatar.cc/150?u=demo',
         parentId: null,
       },
-      { onSuccess: () => setNewCommentContent("") }
+      { onSuccess: () => setNewCommentContent('') }
     );
   };
 
   const handleReply = (content: string, parentId: string) => {
     createComment({
       content,
-      name: "Demo User",
-      avatar: "https://i.pravatar.cc/150?u=demo",
+      name: 'Demo User',
+      avatar: 'https://i.pravatar.cc/150?u=demo',
       parentId,
     });
   };
@@ -66,9 +81,20 @@ export default function PostDetail() {
     updateComment({ commentId, comment: { content } });
   };
 
-  if (loadingPost || loadingComments) return <p className="text-center mt-10">Loading...</p>;
-  if (errorPost) return <p className="text-center mt-10 text-red-500">Error: {errorPost?.message}</p>;
-  if (errorComments) return <p className="text-center mt-10 text-red-500">Error loading comments: {errorComments.message}</p>;
+  if (loadingPost || loadingComments)
+    return <p className="text-center mt-10">Loading...</p>;
+  if (errorPost)
+    return (
+      <p className="text-center mt-10 text-red-500">
+        Error: {errorPost?.message}
+      </p>
+    );
+  if (errorComments)
+    return (
+      <p className="text-center mt-10 text-red-500">
+        Error loading comments: {errorComments.message}
+      </p>
+    );
   if (!post) return <p>Post not found</p>;
 
   return (
@@ -79,10 +105,16 @@ export default function PostDetail() {
 
       <div className="border p-4 rounded shadow-sm bg-white mt-4">
         <div className="flex items-center mb-2">
-          <img src={post?.avatar} alt={post?.name} className="w-8 h-8 rounded-full mr-2" />
+          <img
+            src={post?.avatar}
+            alt={post?.name}
+            className="w-8 h-8 rounded-full mr-2"
+          />
           <div>
             <span className="font-semibold">{post?.name}</span>
-            <p className="text-xs text-gray-500">{formatDate(post.createdAt)}</p>
+            <p className="text-xs text-gray-500">
+              {formatDate(post.createdAt)}
+            </p>
           </div>
         </div>
         <p>{post?.content}</p>
@@ -97,7 +129,7 @@ export default function PostDetail() {
           className="w-full border rounded p-2 mb-2"
           placeholder="Add a comment..."
           value={newCommentContent}
-          onChange={(e) => setNewCommentContent(e.target.value)}
+          onChange={e => setNewCommentContent(e.target.value)}
           rows={2}
           disabled={isCreating}
         />
@@ -106,12 +138,12 @@ export default function PostDetail() {
           disabled={isCreating}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
         >
-          {isCreating ? "Posting..." : "Post Comment"}
+          {isCreating ? 'Posting...' : 'Post Comment'}
         </button>
       </form>
 
       <div className="space-y-3">
-        {commentTree.map((comment) => (
+        {commentTree.map(comment => (
           <CommentItem
             key={comment.id}
             comment={comment}

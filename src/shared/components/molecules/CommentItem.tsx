@@ -1,5 +1,5 @@
-import { useState } from "react";
-import type { CommentNode } from "../../types";
+import { useState } from 'react';
+import type { CommentNode } from '../../types';
 
 interface CommentItemProps {
   comment: CommentNode;
@@ -14,18 +14,18 @@ interface CommentItemProps {
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleString(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
+    dateStyle: 'medium',
+    timeStyle: 'short',
   });
 }
 
 const levelColors = [
-  "border-blue-400",
-  "border-green-400",
-  "border-yellow-400",
-  "border-purple-400",
-  "border-pink-400",
-  "border-red-400",
+  'border-blue-400',
+  'border-green-400',
+  'border-yellow-400',
+  'border-purple-400',
+  'border-pink-400',
+  'border-red-400',
 ];
 
 export function CommentItem({
@@ -39,7 +39,7 @@ export function CommentItem({
   level = 0,
 }: CommentItemProps) {
   const [isReplying, setIsReplying] = useState(false);
-  const [replyContent, setReplyContent] = useState("");
+  const [replyContent, setReplyContent] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
 
@@ -47,7 +47,7 @@ export function CommentItem({
     e.preventDefault();
     if (!replyContent.trim()) return;
     onReply(replyContent, comment.id);
-    setReplyContent("");
+    setReplyContent('');
     setIsReplying(false);
   };
 
@@ -89,7 +89,7 @@ export function CommentItem({
                 className="w-full border rounded p-2 mb-2"
                 placeholder="Edit your comment..."
                 value={editContent}
-                onChange={(e) => setEditContent(e.target.value)}
+                onChange={e => setEditContent(e.target.value)}
                 rows={2}
               />
               <div className="flex gap-2">
@@ -98,7 +98,7 @@ export function CommentItem({
                   disabled={isUpdating}
                   className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 disabled:opacity-50 text-sm"
                 >
-                  {isUpdating ? "Saving..." : "Save"}
+                  {isUpdating ? 'Saving...' : 'Save'}
                 </button>
                 <button
                   type="button"
@@ -131,7 +131,7 @@ export function CommentItem({
               disabled={isDeleting}
               className="text-red-600 hover:text-red-800 text-sm disabled:opacity-50"
             >
-              {isDeleting ? "Deleting..." : "Delete"}
+              {isDeleting ? 'Deleting...' : 'Delete'}
             </button>
           </div>
 
@@ -141,7 +141,7 @@ export function CommentItem({
                 className="w-full border rounded p-2 mb-2"
                 placeholder="Write a reply..."
                 value={replyContent}
-                onChange={(e) => setReplyContent(e.target.value)}
+                onChange={e => setReplyContent(e.target.value)}
                 rows={2}
               />
               <div className="flex gap-2">
@@ -150,7 +150,7 @@ export function CommentItem({
                   disabled={isCreating}
                   className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50 text-sm"
                 >
-                  {isCreating ? "Posting..." : "Post Reply"}
+                  {isCreating ? 'Posting...' : 'Post Reply'}
                 </button>
                 <button
                   type="button"
@@ -167,7 +167,7 @@ export function CommentItem({
 
       {comment.children && comment.children.length > 0 && (
         <div className="mt-4 space-y-4">
-          {comment.children.map((child) => (
+          {comment.children.map(child => (
             <CommentItem
               key={child.id}
               comment={child}
