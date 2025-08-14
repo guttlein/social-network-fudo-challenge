@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPosts } from '@/shared/api';
 import type { Post } from '@/shared/types';
 import { useCreatePost, useDeletePost, useUpdatePost } from '@/features/posts';
+import { SkeletonList } from '@/shared/components';
 
 export default function Home() {
   const [newPostContent, setNewPostContent] = useState('');
@@ -55,7 +56,13 @@ export default function Home() {
   const formatDate = (dateString: string) =>
     new Date(dateString).toLocaleString();
 
-  if (isLoading) return <p className="text-center mt-10">Loading posts...</p>;
+  if (isLoading)
+    return (
+      <div className="max-w-3xl mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Posts</h1>
+        <SkeletonList type="post" count={5} />
+      </div>
+    );
   if (error)
     return (
       <p className="text-center mt-10 text-red-500">Error: {error.message}</p>

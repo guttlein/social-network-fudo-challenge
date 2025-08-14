@@ -10,6 +10,7 @@ import {
 } from '@/features/comments';
 import { buildCommentTree } from '@/shared/utils/buildCommentTree';
 import { CommentItem } from '@/shared/components/molecules/CommentItem';
+import { PostSkeleton, SkeletonList } from '@/shared/components';
 
 export default function PostDetail() {
   const { id } = useParams<{ id: string }>();
@@ -82,7 +83,15 @@ export default function PostDetail() {
   };
 
   if (loadingPost || loadingComments)
-    return <p className="text-center mt-10">Loading...</p>;
+    return (
+      <div className="max-w-3xl mx-auto p-4">
+        <PostSkeleton />
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-4">Comments</h2>
+          <SkeletonList type="comment" count={3} />
+        </div>
+      </div>
+    );
   if (errorPost)
     return (
       <p className="text-center mt-10 text-red-500">
