@@ -21,7 +21,7 @@ export const getSinglePost = async (postId: string): Promise<Post | null> => {
   try {
     const { data } = await axios.get<Post>(`${API_URL}/post/${postId}`);
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
       // Return null if post not found instead of throwing
       return null;
@@ -65,7 +65,7 @@ export const getComments = async (postId: string): Promise<Comment[]> => {
   try {
     const { data } = await axios.get<Comment[]>(`${API_URL}/post/${postId}/comment`);
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
       // Treat 404 as no comments
       return [];
