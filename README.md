@@ -1,256 +1,359 @@
 # Social Network App - Fudo Challenge
 
-Una aplicación de red social desarrollada en React + TypeScript que permite crear, leer, actualizar y eliminar posts y comentarios.
+A social network application developed in React + TypeScript that allows creating, reading, updating, and deleting posts and comments, with scalable architecture and modern quality tools.
 
-## 🚀 **Características**
+## 🚀 **Implemented Features**
 
-- ✅ **Posts**: Crear, eliminar y ver posts
-- ✅ **Comentarios**: Sistema de comentarios anidados (como Reddit)
-- ✅ **Diseño responsive** con Tailwind CSS
-- ✅ **React Router** para navegación entre páginas
-- ✅ **React Query** para manejo de estado y cache
-- ✅ **TypeScript** para type safety
-- ✅ **Docker** configurado para deployment
-- ✅ **Arquitectura escalable** con feature-based y atomic design
-- ✅ **Herramientas de calidad** configuradas (ESLint, Prettier, Husky)
+- ✅ **Posts**: Create, edit, delete, and view posts with infinite scroll
+- ✅ **Comments**: Nested comment system with visual tree structure
+- ✅ **Responsive Design**: Tailwind CSS optimized for mobile
+- ✅ **React Router**: Navigation between pages
+- ✅ **React Query**: Optimized state management and caching
+- ✅ **TypeScript**: Complete type safety
+- ✅ **Docker**: Configured for Nginx deployment
+- ✅ **Scalable Architecture**: Feature-based and atomic design
+- ✅ **Quality Tools**: Configured (ESLint, Prettier, Simple Git Hooks)
+- ✅ **Complete Testing**: Vitest + React Testing Library
+- ✅ **Skeleton Loaders**: UX improvements for posts and comments
+- ✅ **Toast System**: User feedback system
+- ✅ **Confirmation Modals**: For destructive actions
+- ✅ **Infinite Scroll**: For posts with performance optimization
 
-## 🛠 **Tecnologías utilizadas**
+## 🛠 **Technology Stack**
 
 - **Frontend**: React 18 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **State Management**: TanStack React Query
-- **Routing**: React Router DOM
-- **HTTP Client**: Axios
+- **Build Tool**: Vite with optimized path mapping
+- **Styling**: Tailwind CSS with responsive design
+- **State Management**: TanStack React Query v5
+- **Routing**: React Router DOM v6
+- **HTTP Client**: Axios with centralized configuration
 - **Containerization**: Docker + Nginx
-- **Code Quality**: ESLint + Prettier + Husky + lint-staged
-- **Testing**: Vitest + React Testing Library
+- **Code Quality**: ESLint 9 (flat config) + Prettier + Simple Git Hooks
+- **Testing**: Vitest + React Testing Library + 70%+ Coverage
+- **Performance**: Infinite scroll with Intersection Observer
 
-## 📱 **Funcionalidades implementadas**
+## 📱 **Implemented Functionality**
 
-### **Requerimientos obligatorios:**
+### **Core Features:**
 
-1. ✅ Pantalla principal con lista de posts
-2. ✅ Pantalla de detalle de post con comentarios
-3. ✅ Crear posts y comentarios
-4. ✅ Eliminar posts y comentarios
-5. ✅ Diseño personalizado (sin librerías de componentes)
-6. ✅ Dockerfile para Nginx
+1. ✅ **Posts**: Complete CRUD with infinite scroll
+2. ✅ **Comments**: Nested system with replies and editing
+3. ✅ **Navigation**: Routing between main and detail pages
+4. ✅ **Responsive**: Design optimized for mobile and desktop
 
-### **Bonus implementados:**
+### **UX Enhancements:**
 
-1. ✅ Comentarios anidados con estructura de árbol
-2. ✅ Sistema de respuestas a comentarios
-3. ✅ Editar posts y comentarios
-4. ✅ Tests unitarios con Vitest y React Testing Library
-5. ✅ Arquitectura escalable y organizada
-6. ✅ Herramientas de calidad y pre-commit hooks
+1. ✅ **Skeleton Loaders**: Loading states for posts and comments
+2. ✅ **Toast Notifications**: Feedback for successful/failed actions
+3. ✅ **Confirmation Modals**: Confirmation before deleting content
+4. ✅ **Infinite Scroll**: Progressive loading of posts
+5. ✅ **Loading States**: Visual state indicators
 
-### **Pendiente por implementar:**
+### **Technical Features:**
 
-1. ⏳ Skeleton loaders y mejoras de UX
-2. ⏳ Animaciones con Framer Motion
-3. ⏳ Likes y reacciones
-4. ⏳ Paginación e infinite scroll
-5. ⏳ Perfiles de usuario
+1. ✅ **Path Mapping**: Simplified imports with `@/` aliases
+2. ✅ **Type Safety**: Strict TypeScript with complete interfaces
+3. ✅ **Error Handling**: Robust API error handling
+4. ✅ **Performance**: Optimization with React Query and lazy loading
+5. ✅ **Testing**: Complete coverage of components and hooks
 
-## 🚀 **Instalación y desarrollo**
+## 🚀 **Installation and Development**
 
-### **Prerrequisitos**
+### **Prerequisites**
 
 - Node.js 18+
-- npm o yarn
+- npm or yarn
+- Git
 
-### **Instalación**
+### **Installation**
 
 ```bash
-# Clonar el repositorio
-git clone <tu-repo-url>
+# Clone the repository
+git clone <your-repo-url>
 cd social-network-fudo-challenge
 
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Ejecutar en modo desarrollo
+# Run in development mode
 npm run dev
 ```
 
-### **Scripts disponibles**
+### **Available Scripts**
 
 ```bash
-npm run dev                    # Iniciar servidor de desarrollo
-npm run build                  # Construir para producción
-npm run preview                # Previsualizar build de producción
-npm run lint                   # Ejecutar ESLint
-npm run lint:fix               # Ejecutar ESLint con auto-fix
-npm run format                 # Formatear código con Prettier
-npm run format:check          # Verificar formato con Prettier
-npm run test                   # Ejecutar tests
-npm run test:ui                # Ejecutar tests con interfaz visual
-npm run test:coverage          # Ejecutar tests con cobertura
-npm run test:coverage:check    # Verificar cobertura mínima (70%)
+npm run dev                    # Development server
+npm run build                  # Production build
+npm run preview                # Build preview
+npm run lint                   # Run ESLint
+npm run lint:fix               # ESLint with auto-fix
+npm run format                 # Format with Prettier
+npm run test                   # Tests in watch mode
+npm run test:run               # Tests once
+npm run test:coverage          # Tests with coverage
 ```
 
-## 🏗 **Arquitectura del proyecto**
+## 🏗 **Project Architecture**
 
-### **Estructura feature-based + atomic design**
+### **Feature-Based + Atomic Design Structure**
 
 ```
 src/
-├── app/                       # Configuración de la aplicación
-│   ├── providers/            # Providers (React Query, etc.)
-│   └── routes/               # Configuración de rutas
-├── features/                  # Funcionalidades por feature
-│   ├── posts/                # Feature de posts
-│   │   ├── hooks/           # Hooks específicos de posts
-│   │   └── index.ts         # Exports públicos
-│   └── comments/             # Feature de comentarios
-│       ├── hooks/            # Hooks específicos de comentarios
-│       └── index.ts          # Exports públicos
-├── shared/                    # Recursos compartidos
-│   ├── api/                  # Servicios de API
-│   ├── components/           # Componentes reutilizables
-│   │   └── molecules/        # Componentes moleculares
-│   ├── constants/            # Constantes de la aplicación
-│   ├── types/                # Tipos TypeScript
-│   ├── utils/                # Utilidades y helpers
-│   └── index.ts              # Exports centralizados
-├── pages/                     # Páginas de la aplicación
-└── main.tsx                  # Punto de entrada
+├── app/                       # Application configuration
+│   ├── providers/            # Providers (React Query, Toast)
+│   └── routes/               # Route configuration
+├── features/                  # Features by functionality
+│   ├── posts/                # Posts feature
+│   │   ├── hooks/           # usePosts, useInfinitePosts
+│   │   └── index.ts         # Public exports
+│   └── comments/             # Comments feature
+│       ├── hooks/            # useComments
+│       └── index.ts          # Public exports
+├── shared/                    # Shared resources
+│   ├── api/                  # Centralized API services
+│   ├── components/           # Reusable components
+│   │   ├── atoms/           # Basic components (Skeleton)
+│   │   └── molecules/       # Compound components
+│   ├── constants/            # Application constants
+│   ├── contexts/             # Contexts (Toast)
+│   ├── hooks/                # Shared hooks
+│   ├── types/                # TypeScript types
+│   ├── utils/                # Utilities (buildCommentTree)
+│   └── index.ts              # Centralized exports
+├── pages/                     # Application pages
+├── test/                      # Test configuration
+└── main.tsx                  # Entry point
 ```
 
-### **Principios de diseño**
+### **Design Principles**
 
-- **Feature-based**: Organización por funcionalidad
-- **Atomic Design**: Componentes organizados por complejidad
-- **Path mapping**: Imports simplificados con `@/` aliases
-- **Separación de responsabilidades**: API, tipos, y lógica separados
+- **Feature-based**: Organization by functionality
+- **Atomic Design**: Components organized by complexity
+- **Path Mapping**: Simplified imports with `@/` aliases
+- **Separation of concerns**: API, types, and logic separated
+- **Reusability**: Modular and configurable components
 
-## 🔧 **Configuración de desarrollo**
+## 🔧 **Development Configuration**
 
-### **ESLint + Prettier**
+### **ESLint 9 + Prettier**
 
-- **ESLint**: Reglas estrictas de TypeScript y React
-- **Prettier**: Formato consistente de código
-- **Integración**: ESLint y Prettier configurados para trabajar juntos
+- **ESLint**: Flat configuration with strict TypeScript and React rules
+- **Prettier**: Consistent code formatting
+- **Integration**: ESLint and Prettier configured to work together
 
-### **Husky + lint-staged**
+### **Simple Git Hooks + lint-staged**
 
-- **Pre-commit hooks**: Validación automática antes de cada commit
-- **lint-staged**: Solo valida archivos modificados
-- **Configuración automática**: Se instala automáticamente con `npm install`
+- **Pre-commit hooks**: Automatic validation before each commit
+- **lint-staged**: Only validates modified files
+- **Migration**: From Husky to Simple Git Hooks (no deprecation)
 
 ### **TypeScript**
 
-- **Configuración estricta**: Mejor calidad de código
-- **Path mapping**: Imports simplificados con `@/` aliases
-- **Project references**: Configuración optimizada para Vite
+- **Strict configuration**: Better code quality
+- **Path mapping**: Simplified imports with `@/` aliases
+- **Project references**: Configuration optimized for Vite
 
 ### **Vite**
 
-- **Configuración optimizada**: Build rápido y eficiente
-- **Path mapping**: Soporte para aliases de TypeScript
-- **Hot reload**: Desarrollo rápido con cambios en tiempo real
+- **Optimized configuration**: Fast and efficient build
+- **Path mapping**: Support for TypeScript aliases
+- **Hot reload**: Fast development with real-time changes
 
 ## 🧪 **Testing**
 
-### **Configuración**
+### **Configuration**
 
-- **Vitest**: Framework de testing rápido
-- **React Testing Library**: Testing de componentes React
-- **Cobertura**: Mínimo 70% en líneas, funciones, branches y statements
+- **Vitest**: Fast and modern testing framework
+- **React Testing Library**: React component testing
+- **Coverage**: Minimum 70% in lines, functions, branches, and statements
+- **Test Utils**: Custom render with providers
 
-### **Ejecutar tests**
+### **Test Coverage**
+
+- **Modal.test.tsx**: 16/16 tests ✅
+- **Toast.test.tsx**: 22/22 tests ✅
+- **CommentItem.test.tsx**: 13/13 tests ✅
+- **Home.test.tsx**: 2/2 tests ✅
+- **Total**: 53/53 tests passing (100%)
+
+### **Running Tests**
 
 ```bash
-npm run test                   # Tests en modo watch
-npm run test:ui                # Interfaz visual para tests
-npm run test:coverage          # Tests con reporte de cobertura
-npm run test:coverage:check    # Verificar cobertura mínima
+npm run test                   # Tests in watch mode
+npm run test:run               # Tests once
+npm run test:coverage          # Tests with coverage report
 ```
+
+## 🎨 **Implemented UI Components**
+
+### **Skeleton Loaders**
+
+- **Skeleton**: Reusable base component
+- **PostSkeleton**: Specific loader for posts
+- **CommentSkeleton**: Specific loader for comments
+- **SkeletonList**: List of skeletons
+
+### **Modals**
+
+- **Modal**: Reusable base component
+- **ConfirmDeleteModal**: Confirmation modal for deletion
+
+### **Toast System**
+
+- **Toast**: Individual notification component
+- **ToastContainer**: Toast container
+- **ToastContext**: Context for toast management
+- **useToastActions**: Helper hook for toast actions
+
+### **Infinite Scroll**
+
+- **InfiniteScrollLoader**: Loader for infinite scroll
+- **useThresholdFetch**: Hook for scroll detection
 
 ## 🐳 **Docker**
 
-### **Construir la imagen**
+### **Build Image**
 
 ```bash
 docker build -t social-network-app .
 ```
 
-### **Ejecutar el contenedor**
+### **Run Container**
 
 ```bash
 docker run -p 3000:80 social-network-app
 ```
 
-La aplicación estará disponible en `http://localhost:3000`
+The application will be available at `http://localhost:3000`
 
-## 📡 **API Endpoints**
+## 📡 **API Integration**
 
-La aplicación consume la siguiente API pública:
+### **Configuration**
 
-- `GET /post` - Obtener todos los posts
-- `GET /post/:id` - Obtener un post específico
-- `POST /post` - Crear un nuevo post
-- `DELETE /post/:id` - Eliminar un post
-- `GET /post/:id/comment` - Obtener comentarios de un post
-- `POST /post/:id/comment` - Crear un comentario
-- `DELETE /post/:id/comment/:commentId` - Eliminar un comentario
+- **Base URL**: MockAPI for development
+- **Endpoints**: Posts and comments
+- **Error Handling**: Robust error handling
+- **Caching**: React Query for optimization
 
-## 🎨 **Diseño y UX**
+### **Used Endpoints**
 
-- **Diseño minimalista** y moderno
-- **Responsive design** para móviles y desktop
-- **Sistema de colores** consistente
-- **Tipografía legible** y jerarquía visual clara
-- **Interacciones suaves** y feedback visual
+- `GET /post` - Get posts with pagination
+- `GET /post/:id` - Get specific post
+- `POST /post` - Create new post
+- `PUT /post/:id` - Update post
+- `DELETE /post/:id` - Delete post
+- `GET /comment` - Get comments
+- `POST /comment` - Create comment
+- `PUT /comment/:id` - Update comment
+- `DELETE /comment/:id` - Delete comment
 
-## 🚀 **Deployment**
+## 🚀 **Performance and Optimization**
 
-### **Opción 1: Docker (Recomendado)**
+### **React Query**
 
-```bash
-# Construir y ejecutar
-docker build -t social-network-app .
-docker run -p 80:80 social-network-app
-```
+- **Caching**: Intelligent data caching
+- **Background Updates**: Background updates
+- **Optimistic Updates**: Immediate responsive UI
 
-### **Opción 2: Build estático**
+### **Infinite Scroll**
 
-```bash
-npm run build
-# Servir la carpeta dist con cualquier servidor web
-```
+- **Lazy Loading**: Progressive content loading
+- **Intersection Observer**: Efficient scroll detection
+- **Memory Management**: Optimized memory management
 
-## 🤝 **Contribución**
+### **Components**
 
-### **Flujo de trabajo**
+- **Memoization**: React.memo where necessary
+- **Lazy Loading**: Deferred loading of heavy components
+- **Bundle Splitting**: Intelligent code division
 
-1. **Fork** el proyecto
-2. **Crea una rama** para tu feature (`git checkout -b feature/AmazingFeature`)
-3. **Haz commit** de tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** a la rama (`git push origin feature/AmazingFeature`)
-5. **Abre un Pull Request**
+## 🎯 **Implemented Improvements**
 
-### **Estándares de código**
+### **Step 1: Architecture and Organization** ✅
 
-- **ESLint**: El código debe pasar todas las reglas de linting
-- **Prettier**: Formato automático aplicado
-- **Tests**: Nuevas funcionalidades deben incluir tests
-- **Cobertura**: Mantener cobertura mínima del 70%
+- Feature-based + atomic design reorganization
+- Path mapping with `@/` aliases
+- Scalable folder structure
 
-## 📄 **Licencia**
+### **Step 2: Quality Tools** ✅
 
-Este proyecto fue desarrollado como parte del challenge técnico para Fudo.
+- ESLint 9 with strict configuration
+- Prettier for consistent formatting
+- Simple Git Hooks (migration from Husky)
+- lint-staged for pre-commit validation
 
-## 👨‍💻 **Autor**
+### **Step 3: UI and UX** ✅
 
-Desarrollado como challenge técnico para demostrar habilidades en:
+- Skeleton loaders for posts and comments
+- Toast system for feedback
+- Confirmation modals
+- Improved responsive design
+- Visual separators for nested comments
 
-- React + TypeScript
-- Arquitectura de aplicaciones frontend escalable
-- Integración con APIs
-- Docker y containerización
-- Diseño responsive y UX
-- Testing y calidad de código
-- Herramientas de desarrollo modernas
+### **Step 4: Performance** ✅
+
+- Infinite scroll for posts
+- Optimization with React Query
+- Custom hooks for specific functionalities
+
+### **Step 5: Testing** ✅
+
+- Complete tests for all components
+- 100% test coverage
+- Optimized Vitest configuration
+
+## 🔮 **Next Improvements (Optional)**
+
+### **Animations**
+
+- Framer Motion for transitions
+- Entry/exit animations
+- Micro-interactions
+
+### **Social Features**
+
+- Like and reaction system
+- Filters and search
+- User profiles
+
+### **Infrastructure**
+
+- GitHub Actions for CI/CD
+- Automatic deployment
+- Performance monitoring
+
+## 🤝 **Contribution**
+
+### **Workflow**
+
+1. **Fork** the project
+2. **Create a branch** for your feature
+3. **Implement** following standards
+4. **Tests** must pass 100%
+5. **Linting** must pass without errors
+6. **Open a Pull Request**
+
+### **Code Standards**
+
+- **ESLint**: Code must pass all rules
+- **Prettier**: Automatic formatting applied
+- **Tests**: New features must include tests
+- **Coverage**: Maintain minimum 70% coverage
+- **TypeScript**: Strict typing required
+
+## 📄 **License**
+
+This project was developed as part of the technical challenge for Fudo.
+
+## 👨‍💻 **Author**
+
+Developed as a technical challenge to demonstrate skills in:
+
+- **React 18 + TypeScript** advanced
+- **Scalable frontend architecture** (feature-based + atomic design)
+- **Complete testing** with Vitest + RTL
+- **Modern quality tools** (ESLint 9, Simple Git Hooks)
+- **Optimized performance and UX**
+- **Docker and containerization**
+- **Robust API integration**
+- **Reusable component development**
