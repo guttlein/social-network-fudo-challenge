@@ -16,6 +16,17 @@ export function Toast({ toast, onRemove }: ToastProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    // Auto-remove toast after duration
+    if (toast.duration && toast.duration > 0) {
+      const autoRemoveTimer = setTimeout(() => {
+        onRemove(toast.id);
+      }, toast.duration);
+
+      return () => clearTimeout(autoRemoveTimer);
+    }
+  }, [toast.duration, toast.id, onRemove]);
+
   const handleRemove = () => {
     setIsLeaving(true);
     setTimeout(() => onRemove(toast.id), 300);
@@ -114,7 +125,7 @@ export function Toast({ toast, onRemove }: ToastProps) {
   };
 
   return (
-    <div className={getToastStyles()}>
+    <div className={getToastStyles()} role="alert" aria-live="polite">
       {getIcon()}
 
       <div className="flex-1 min-w-0">

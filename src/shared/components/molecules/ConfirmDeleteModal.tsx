@@ -28,12 +28,12 @@ export function ConfirmDeleteModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-      <div className="space-y-4">
+      <div className="space-y-4 sm:space-y-6">
         {/* Warning Icon */}
         <div className="flex justify-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-100 rounded-full flex items-center justify-center">
             <svg
-              className="w-8 h-8 text-red-600"
+              className="w-6 h-6 sm:w-8 sm:h-8 text-red-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -49,21 +49,23 @@ export function ConfirmDeleteModal({
         </div>
 
         {/* Message */}
-        <p className="text-center text-gray-600">{message}</p>
+        <p className="text-center text-gray-600 text-sm sm:text-base px-2">
+          {message}
+        </p>
 
         {/* Actions */}
-        <div className="flex gap-3 pt-4">
+        <div className="flex flex-col sm:flex-row gap-3 pt-4">
           <button
             onClick={onClose}
             disabled={isDeleting}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm sm:text-base font-medium"
           >
             {cancelText}
           </button>
           <button
             onClick={handleConfirm}
             disabled={isDeleting}
-            className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 px-4 py-2 sm:py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm sm:text-base font-medium"
           >
             {isDeleting ? (
               <div className="flex items-center justify-center gap-2">

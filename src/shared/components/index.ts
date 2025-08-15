@@ -7,3 +7,4 @@ export * from './molecules/Modal';
 export * from './molecules/ConfirmDeleteModal';
 export * from './molecules/Toast';
 export * from './molecules/ToastContainer';
+export * from './molecules/InfiniteScrollLoader';
