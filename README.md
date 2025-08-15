@@ -226,6 +226,40 @@ docker run -p 3000:80 social-network-app
 
 The application will be available at `http://localhost:3000`
 
+## 🚀 **CI/CD Pipeline**
+
+### **GitHub Actions Workflow**
+
+The project includes a basic GitHub Actions workflow that runs automatically:
+
+#### **When does it run?**
+
+- ✅ **Push to main**: Executes the complete pipeline
+- ✅ **Pull Request**: Verifies everything works before merging
+
+#### **What does it do?**
+
+1. **Install dependencies** (`npm ci`)
+2. **Run ESLint** (`npm run lint`)
+3. **Run tests** (`npm run test:run`)
+4. **Build the app** (`npm run build`)
+
+#### **How does it work?**
+
+- **Automatic**: You don't need to do anything else
+- **Verification**: Ensures code works before merging
+- **Quality**: Maintains consistent code standards
+
+#### **Documentation**
+
+This workflow is based on the [official GitHub Actions documentation](https://docs.github.com/en/actions).
+
+### **Benefits**
+
+- ✅ **Automatic quality**: No more linting errors or failing tests
+- ✅ **Confidence**: You know the code works before merging
+- ✅ **Professional**: Industry standard implemented
+
 ## 📡 **API Integration**
 
 ### **Configuration**
@@ -302,37 +336,6 @@ The application will be available at `http://localhost:3000`
 - 100% test coverage
 - Optimized Vitest configuration
 
-## 🔮 **Next Improvements (Optional)**
-
-### **Animations**
-
-- Framer Motion for transitions
-- Entry/exit animations
-- Micro-interactions
-
-### **Social Features**
-
-- Like and reaction system
-- Filters and search
-- User profiles
-
-### **Infrastructure**
-
-- GitHub Actions for CI/CD
-- Automatic deployment
-- Performance monitoring
-
-## 🤝 **Contribution**
-
-### **Workflow**
-
-1. **Fork** the project
-2. **Create a branch** for your feature
-3. **Implement** following standards
-4. **Tests** must pass 100%
-5. **Linting** must pass without errors
-6. **Open a Pull Request**
-
 ### **Code Standards**
 
 - **ESLint**: Code must pass all rules
@@ -357,3 +360,11 @@ Developed as a technical challenge to demonstrate skills in:
 - **Docker and containerization**
 - **Robust API integration**
 - **Reusable component development**
+
+### **Infrastructure**
+
+- GitHub Actions for CI/CD ✅
+- Automated testing and linting ✅
+- Docker image building ✅
+- Dependency management ✅
+- Release automation ✅

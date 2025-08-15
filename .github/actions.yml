@@ -1,0 +1,25 @@
+# GitHub Actions configuration
+# This file configures various aspects of GitHub Actions
+
+# Allow GitHub Actions to create and approve pull requests
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+# Enable required workflows
+required_workflows:
+  - "ci-cd.yml"
+  - "pull-request.yml"
+
+# Environment protection rules
+environments:
+  production:
+    protection_rules:
+      required_reviewers:
+        - "emili"
+      wait_timer: 0
+      deployment_branch_policy:
+        protected_branches: true
+        custom_branch_policies: false
