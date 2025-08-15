@@ -1,201 +1,172 @@
 import { useState } from 'react';
-import type { CommentNode } from '../../types';
+import { Button, Textarea } from '../atoms';
+import { CommentForm } from './CommentForm';
+import type { CommentNode } from '@/shared/types';
 
 interface CommentItemProps {
   comment: CommentNode;
+  level: number;
   onDelete: (id: string) => void;
-  onReply: (content: string, parentId: string) => void;
+  onReply: (parentId: string, content: string) => void;
   onUpdate: (id: string, content: string) => void;
-  isDeleting?: boolean;
-  isCreating?: boolean;
-  isUpdating?: boolean;
-  level?: number;
 }
 
 export function CommentItem({
   comment,
+  level,
   onDelete,
   onReply,
   onUpdate,
-  isDeleting = false,
-  isCreating = false,
-  isUpdating = false,
-  level = 0,
 }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-  const [replyContent, setReplyContent] = useState('');
 
   const handleEdit = () => {
     setIsEditing(true);
     setEditContent(comment.content);
   };
 
-  const handleSave = () => {
+  const handleUpdate = () => {
     if (editContent.trim() && editContent !== comment.content) {
-      onUpdate(comment.id, editContent);
+      onUpdate(comment.id, editContent.trim());
     }
     setIsEditing(false);
   };
 
-  const handleCancel = () => {
+  const handleCancelEdit = () => {
     setIsEditing(false);
     setEditContent(comment.content);
   };
 
-  const handleReply = () => {
-    if (replyContent.trim()) {
-      onReply(replyContent, comment.id);
-      setReplyContent('');
-      setIsReplying(false);
-    }
+  const handleReply = (content: string) => {
+    onReply(comment.id, content);
+    setIsReplying(false);
   };
 
   const handleCancelReply = () => {
     setIsReplying(false);
-    setReplyContent('');
   };
 
-  const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleString();
-
-  // Color system for comment tree levels
-  const levelColors = [
-    'border-blue-400',
-    'border-green-400',
-    'border-yellow-400',
-    'border-purple-400',
-    'border-pink-400',
-    'border-red-400',
-    'border-indigo-400',
-    'border-teal-400',
+  const borderColors = [
+    'border-l-blue-500',
+    'border-l-green-500',
+    'border-l-purple-500',
+    'border-l-orange-500',
+    'border-l-pink-500',
   ];
 
-  const borderColor = levelColors[level % levelColors.length];
+  const borderColor = borderColors[level % borderColors.length];
 
   return (
-    <div className={`border-l-2 ${borderColor} pl-3 sm:pl-4`}>
-      <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4">
+    <div className={`border-l-4 ${borderColor} pl-4 mb-4`}>
+      <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
         {/* Comment Header */}
-        <div className="flex items-start gap-3 mb-3">
-          <img
-            src={comment.avatar}
-            alt={comment.name}
-            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex-shrink-0"
-          />
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2">
-              <div>
-                <h4 className="font-medium text-gray-900 text-sm sm:text-base">
-                  {comment.name}
-                </h4>
-                <p className="text-xs text-gray-500">
-                  {formatDate(comment.createdAt)}
-                </p>
-              </div>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center space-x-3">
+            <img
+              src={comment.avatar || '/default-avatar.png'}
+              alt={comment.name}
+              className="w-8 h-8 rounded-full object-cover"
+              onError={e => {
+                e.currentTarget.src = '/default-avatar.png';
+              }}
+            />
+            <div>
+              <h4 className="font-medium text-gray-900 text-sm">
+                {comment.name}
+              </h4>
+              <p className="text-xs text-gray-500">
+                {new Date(comment.createdAt).toLocaleDateString()}
+              </p>
             </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsReplying(!isReplying)}
+              className="text-xs"
+            >
+              Reply
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleEdit}
+              className="text-xs"
+            >
+              Edit
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => onDelete(comment.id)}
+              className="text-xs"
+            >
+              Delete
+            </Button>
           </div>
         </div>
 
         {/* Comment Content */}
         {isEditing ? (
-          <div className="mb-4">
-            <textarea
-              className="w-full border border-gray-300 rounded-lg p-3 text-sm sm:text-base resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          <div className="space-y-3">
+            <Textarea
               value={editContent}
               onChange={e => setEditContent(e.target.value)}
+              placeholder="Edit your comment..."
+              maxLength={500}
+              showCharacterCount
               rows={3}
             />
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-3">
-              <button
-                onClick={handleSave}
-                disabled={isUpdating || !editContent.trim()}
-                className="flex-1 sm:flex-none bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors text-sm font-medium"
-              >
-                {isUpdating ? 'Saving...' : 'Save'}
-              </button>
-              <button
-                onClick={handleCancel}
-                className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm"
-              >
+            <div className="flex items-center justify-end space-x-2">
+              <Button variant="ghost" size="sm" onClick={handleCancelEdit}>
                 Cancel
-              </button>
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleUpdate}
+                disabled={
+                  !editContent.trim() || editContent === comment.content
+                }
+              >
+                Update
+              </Button>
             </div>
           </div>
         ) : (
-          <p className="text-gray-800 text-sm sm:text-base leading-relaxed mb-4">
+          <p className="text-gray-800 text-sm leading-relaxed">
             {comment.content}
           </p>
         )}
 
-        {/* Comment Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-100">
-          <div className="flex gap-3">
-            <button
-              onClick={() => setIsReplying(!isReplying)}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
-            >
-              {isReplying ? 'Cancel Reply' : 'Reply'}
-            </button>
-            <button
-              onClick={handleEdit}
-              className="text-gray-600 hover:text-gray-800 text-sm transition-colors"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => onDelete(comment.id)}
-              disabled={isDeleting}
-              className="text-red-600 hover:text-red-700 disabled:opacity-50 text-sm transition-colors"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-
         {/* Reply Form */}
         {isReplying && (
-          <div className="mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <textarea
-              className="w-full border border-gray-300 rounded-lg p-3 text-sm sm:text-base resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <CommentForm
+              onSubmit={handleReply}
+              onCancel={handleCancelReply}
               placeholder="Write a reply..."
-              value={replyContent}
-              onChange={e => setReplyContent(e.target.value)}
-              rows={2}
+              submitText="Reply"
+              cancelText="Cancel"
+              maxLength={300}
             />
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-3">
-              <button
-                onClick={handleReply}
-                disabled={isCreating || !replyContent.trim()}
-                className="flex-1 sm:flex-none bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors text-sm font-medium"
-              >
-                {isCreating ? 'Posting...' : 'Post Reply'}
-              </button>
-              <button
-                onClick={handleCancelReply}
-                className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm"
-              >
-                Cancel
-              </button>
-            </div>
           </div>
         )}
 
         {/* Nested Comments */}
         {comment.children && comment.children.length > 0 && (
-          <div className="mt-4 space-y-3 sm:space-y-4">
+          <div className="mt-4 space-y-3">
             {comment.children.map(child => (
               <CommentItem
                 key={child.id}
                 comment={child}
+                level={level + 1}
                 onDelete={onDelete}
                 onReply={onReply}
                 onUpdate={onUpdate}
-                isDeleting={isDeleting}
-                isCreating={isCreating}
-                isUpdating={isUpdating}
-                level={level + 1}
               />
             ))}
           </div>
