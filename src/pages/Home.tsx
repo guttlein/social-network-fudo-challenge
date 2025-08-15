@@ -4,12 +4,19 @@ import { useQuery } from '@tanstack/react-query';
 import { getPosts } from '@/shared/api';
 import type { Post } from '@/shared/types';
 import { useCreatePost, useDeletePost, useUpdatePost } from '@/features/posts';
-import { SkeletonList } from '@/shared/components';
+import { SkeletonList, ConfirmDeleteModal } from '@/shared/components';
 
 export default function Home() {
   const [newPostContent, setNewPostContent] = useState('');
   const [editingPost, setEditingPost] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    postId: string | null;
+  }>({
+    isOpen: false,
+    postId: null,
+  });
 
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
@@ -34,7 +41,17 @@ export default function Home() {
   };
 
   const handleDeletePost = (postId: string) => {
-    deletePost(postId);
+    setDeleteModal({ isOpen: true, postId });
+  };
+
+  const confirmDeletePost = () => {
+    if (deleteModal.postId) {
+      deletePost(deleteModal.postId);
+    }
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModal({ isOpen: false, postId: null });
   };
 
   const handleEditPost = (post: Post) => {
@@ -162,13 +179,24 @@ export default function Home() {
                   disabled={isDeleting}
                   className="text-red-600 hover:underline disabled:opacity-50 text-sm"
                 >
-                  {isDeleting ? 'Deleting...' : 'Delete'}
+                  Delete
                 </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={closeDeleteModal}
+        onConfirm={confirmDeletePost}
+        title="Delete Post"
+        message="Are you sure you want to delete this post? This action cannot be undone."
+        confirmText="Delete Post"
+        isDeleting={isDeleting}
+      />
     </div>
   );
 }
