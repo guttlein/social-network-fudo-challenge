@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render } from '../../test/test-utils';
 import Home from '../Home';
 
 // Mock de la API
@@ -20,25 +19,9 @@ vi.mock('@/shared/api', () => ({
   ),
 }));
 
-// Wrapper para providers
-const createTestWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>{children}</BrowserRouter>
-    </QueryClientProvider>
-  );
-};
-
 describe('Home', () => {
   it('renders posts correctly', async () => {
-    render(<Home />, { wrapper: createTestWrapper() });
+    render(<Home />);
 
     await waitFor(() => {
       expect(screen.getByText('Test post content')).toBeDefined();
@@ -47,7 +30,7 @@ describe('Home', () => {
   });
 
   it('shows create post form', async () => {
-    render(<Home />, { wrapper: createTestWrapper() });
+    render(<Home />);
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText('New post...')).toBeDefined();
@@ -56,7 +39,7 @@ describe('Home', () => {
   });
 
   it('displays post actions', async () => {
-    render(<Home />, { wrapper: createTestWrapper() });
+    render(<Home />);
 
     await waitFor(() => {
       expect(screen.getByText('See Details')).toBeDefined();

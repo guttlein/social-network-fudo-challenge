@@ -10,6 +10,7 @@ import {
 } from '@/features/comments';
 import { buildCommentTree } from '@/shared/utils/buildCommentTree';
 import { CommentItem } from '@/shared/components/molecules/CommentItem';
+import { useToastActions } from '@/shared/hooks';
 import {
   PostSkeleton,
   SkeletonList,
@@ -28,6 +29,14 @@ export default function PostDetail() {
     isOpen: false,
     commentId: null,
   });
+  const {
+    showCommentCreated,
+    showCommentUpdated,
+    showCommentDeleted,
+    showErrorCreating,
+    showErrorUpdating,
+    showErrorDeleting,
+  } = useToastActions();
 
   const { mutate: createComment, isPending: isCreating } =
     useCreateComment(postId);
@@ -72,17 +81,29 @@ export default function PostDetail() {
         avatar: 'https://i.pravatar.cc/150?u=demo',
         parentId: null,
       },
-      { onSuccess: () => setNewCommentContent('') }
+      {
+        onSuccess: () => {
+          setNewCommentContent('');
+          showCommentCreated();
+        },
+        onError: () => showErrorCreating('Comment'),
+      }
     );
   };
 
   const handleReply = (content: string, parentId: string) => {
-    createComment({
-      content,
-      name: 'Demo User',
-      avatar: 'https://i.pravatar.cc/150?u=demo',
-      parentId,
-    });
+    createComment(
+      {
+        content,
+        name: 'Demo User',
+        avatar: 'https://i.pravatar.cc/150?u=demo',
+        parentId,
+      },
+      {
+        onSuccess: () => showCommentCreated(),
+        onError: () => showErrorCreating('Comment'),
+      }
+    );
   };
 
   const handleDeleteComment = (commentId: string) => {
@@ -91,7 +112,10 @@ export default function PostDetail() {
 
   const confirmDeleteComment = () => {
     if (deleteModal.commentId) {
-      deleteComment(deleteModal.commentId);
+      deleteComment(deleteModal.commentId, {
+        onSuccess: () => showCommentDeleted(),
+        onError: () => showErrorDeleting('Comment'),
+      });
     }
   };
 
@@ -100,7 +124,13 @@ export default function PostDetail() {
   };
 
   const handleUpdateComment = (commentId: string, content: string) => {
-    updateComment({ commentId, comment: { content } });
+    updateComment(
+      { commentId, comment: { content } },
+      {
+        onSuccess: () => showCommentUpdated(),
+        onError: () => showErrorUpdating('Comment'),
+      }
+    );
   };
 
   if (loadingPost || loadingComments)

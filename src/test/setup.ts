@@ -1,3 +1,5 @@
+import './test-utils';
+
 // Mock de IntersectionObserver para tests
 Object.defineProperty(window, 'IntersectionObserver', {
   writable: true,

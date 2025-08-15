@@ -5,6 +5,7 @@ import { getPosts } from '@/shared/api';
 import type { Post } from '@/shared/types';
 import { useCreatePost, useDeletePost, useUpdatePost } from '@/features/posts';
 import { SkeletonList, ConfirmDeleteModal } from '@/shared/components';
+import { useToastActions } from '@/shared/hooks';
 
 export default function Home() {
   const [newPostContent, setNewPostContent] = useState('');
@@ -18,6 +19,14 @@ export default function Home() {
     postId: null,
   });
 
+  const {
+    showPostCreated,
+    showPostUpdated,
+    showPostDeleted,
+    showErrorCreating,
+    showErrorUpdating,
+    showErrorDeleting,
+  } = useToastActions();
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
   const { mutate: updatePost, isPending: isUpdating } = useUpdatePost();
@@ -32,12 +41,20 @@ export default function Home() {
   });
 
   const handleCreatePost = () => {
-    createPost({
-      content: newPostContent,
-      name: 'Demo user',
-      avatar: 'https://i.pravatar.cc/150?u=demo',
-    });
-    setNewPostContent('');
+    createPost(
+      {
+        content: newPostContent,
+        name: 'Demo user',
+        avatar: 'https://i.pravatar.cc/150?u=demo',
+      },
+      {
+        onSuccess: () => {
+          setNewPostContent('');
+          showPostCreated();
+        },
+        onError: () => showErrorCreating('Post'),
+      }
+    );
   };
 
   const handleDeletePost = (postId: string) => {
@@ -46,7 +63,10 @@ export default function Home() {
 
   const confirmDeletePost = () => {
     if (deleteModal.postId) {
-      deletePost(deleteModal.postId);
+      deletePost(deleteModal.postId, {
+        onSuccess: () => showPostDeleted(),
+        onError: () => showErrorDeleting('Post'),
+      });
     }
   };
 
@@ -60,9 +80,17 @@ export default function Home() {
   };
 
   const handleUpdatePost = (postId: string) => {
-    updatePost({ postId, post: { content: editContent } });
-    setEditingPost(null);
-    setEditContent('');
+    updatePost(
+      { postId, post: { content: editContent } },
+      {
+        onSuccess: () => {
+          setEditingPost(null);
+          setEditContent('');
+          showPostUpdated();
+        },
+        onError: () => showErrorUpdating('Post'),
+      }
+    );
   };
 
   const handleCancelEdit = () => {
