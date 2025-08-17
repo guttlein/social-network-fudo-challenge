@@ -46,13 +46,18 @@ export function PostForm({
     }
 
     onSubmit({ title: title.trim(), content: content.trim() });
+    clearForm();
   };
 
-  const handleCancel = () => {
+  const clearForm = () => {
     setTitle('');
     setContent('');
     setTitleError('');
     setContentError('');
+  };
+
+  const handleCancel = () => {
+    clearForm();
     onCancel?.();
   };
 
