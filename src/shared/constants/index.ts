@@ -15,6 +15,13 @@ export const APP_CONFIG = {
   DESCRIPTION: 'A social network webapp',
 } as const;
 
+// Mock user for posts and comments
+export const MOCK_USER = {
+  name: 'Emiliano Developer',
+  avatar:
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+} as const;
+
 export const PAGINATION = {
   DEFAULT_PAGE: 1,
   DEFAULT_LIMIT: 10,

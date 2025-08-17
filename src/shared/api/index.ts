@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { Post, Comment } from '../types';
-import { API_CONFIG } from '../constants';
+import { API_CONFIG, MOCK_USER } from '../constants';
 
 // Posts API functions
 
@@ -26,9 +26,18 @@ export const getSinglePost = async (postId: string): Promise<Post | null> => {
 };
 
 export const createPost = async (post: Partial<Post>): Promise<Post> => {
+  // Send complete post data with mock user
+  const postData = {
+    ...post,
+    title: post.title || 'Untitled Post', // Default title if not provided
+    name: MOCK_USER.name,
+    avatar: MOCK_USER.avatar,
+    createdAt: new Date().toISOString(),
+  };
+
   const { data } = await axios.post<Post>(
     `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}`,
-    post
+    postData
   );
   return data;
 };
@@ -71,9 +80,17 @@ export const createComment = async (
   postId: string,
   comment: Partial<Comment>
 ): Promise<Comment> => {
+  // Send complete comment data with mock user
+  const commentData = {
+    ...comment,
+    name: MOCK_USER.name,
+    avatar: MOCK_USER.avatar,
+    createdAt: new Date().toISOString(),
+  };
+
   const { data } = await axios.post<Comment>(
     `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.POSTS}/${postId}${API_CONFIG.ENDPOINTS.COMMENTS}`,
-    comment
+    commentData
   );
   return data;
 };

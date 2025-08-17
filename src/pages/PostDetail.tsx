@@ -186,6 +186,9 @@ export default function PostDetail() {
             </div>
           </div>
 
+          <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+            {post.title}
+          </h1>
           <p className="text-gray-800 leading-relaxed text-lg">
             {post.content}
           </p>

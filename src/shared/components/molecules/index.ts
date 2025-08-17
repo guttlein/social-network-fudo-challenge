@@ -1,4 +1,5 @@
 export { PostCard } from './PostCard';
+export { PostForm } from './PostForm';
 export { CommentForm } from './CommentForm';
 export { CommentItem } from './CommentItem';
 export { PostSkeleton } from './PostSkeleton';

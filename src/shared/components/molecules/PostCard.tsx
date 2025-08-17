@@ -5,16 +5,24 @@ import type { Post } from '@/shared/types';
 interface PostCardProps {
   post: Post;
   onDelete: (id: string) => void;
+  onEdit?: (id: string) => void;
   showDeleteButton?: boolean;
+  showEditButton?: boolean;
 }
 
 export function PostCard({
   post,
   onDelete,
+  onEdit,
   showDeleteButton = true,
+  showEditButton = true,
 }: PostCardProps) {
   const handleDelete = () => {
     onDelete(post.id);
+  };
+
+  const handleEdit = () => {
+    onEdit?.(post.id);
   };
 
   return (
@@ -39,16 +47,36 @@ export function PostCard({
             </div>
           </div>
 
-          {showDeleteButton && (
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={handleDelete}
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              Delete
-            </Button>
-          )}
+          <div className="flex items-center space-x-2">
+            {showEditButton && onEdit && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleEdit}
+                aria-label={`Edit post by ${post.name}`}
+              >
+                Edit
+              </Button>
+            )}
+
+            {showDeleteButton && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={handleDelete}
+                aria-label={`Delete post by ${post.name}`}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Title */}
+        <div className="mb-3">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            {post.title}
+          </h3>
         </div>
 
         {/* Content */}
