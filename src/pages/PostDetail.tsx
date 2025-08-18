@@ -73,8 +73,7 @@ export default function PostDetail() {
       refetchComments();
       refetchPost();
       setCommentToDelete(null);
-    } catch (error) {
-      console.error('Error deleting comment:', error);
+    } catch {
       showError('Failed to delete comment', 'Please try again later.');
     }
   };

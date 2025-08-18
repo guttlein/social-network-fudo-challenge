@@ -5,7 +5,8 @@ A social network application developed in React + TypeScript that allows creatin
 ## 🚀 **Implemented Features**
 
 - ✅ **Posts**: Create, edit, delete, and view posts with infinite scroll
-- ✅ **Comments**: Nested comment system with visual tree structure
+- ✅ **Comments**: **Complete nested comment system with replies and visual tree structure**
+- ✅ **Comment Management**: **Handle orphaned comments when parent is deleted**
 - ✅ **Responsive Design**: Tailwind CSS optimized for mobile
 - ✅ **React Router**: Navigation between pages
 - ✅ **React Query**: Optimized state management and caching
@@ -18,6 +19,7 @@ A social network application developed in React + TypeScript that allows creatin
 - ✅ **Toast System**: User feedback system
 - ✅ **Confirmation Modals**: For destructive actions
 - ✅ **Infinite Scroll**: For posts with performance optimization
+- ✅ **Comment Tree Structure**: **Visual representation of nested comments with proper parent-child relationships**
 
 ## 🛠 **Technology Stack**
 
@@ -37,9 +39,17 @@ A social network application developed in React + TypeScript that allows creatin
 ### **Core Features:**
 
 1. ✅ **Posts**: Complete CRUD with infinite scroll
-2. ✅ **Comments**: Nested system with replies and editing
+2. ✅ **Comments**: **Complete nested system with replies, editing, and proper parent-child management**
 3. ✅ **Navigation**: Routing between main and detail pages
 4. ✅ **Responsive**: Design optimized for mobile and desktop
+
+### **Comment System Features:**
+
+1. ✅ **Nested Comments**: **Reply to comments with unlimited nesting levels**
+2. ✅ **Visual Tree Structure**: **Clear visual representation with color-coded borders**
+3. ✅ **Orphaned Comment Handling**: **Comments whose parent was deleted are shown with explanatory notes**
+4. ✅ **Proper Parent-Child Relationships**: **Correct parentId management for API calls**
+5. ✅ **Comment CRUD Operations**: **Create, read, update, delete comments and replies**
 
 ### **UX Enhancements:**
 
@@ -48,6 +58,7 @@ A social network application developed in React + TypeScript that allows creatin
 3. ✅ **Confirmation Modals**: Confirmation before deleting content
 4. ✅ **Infinite Scroll**: Progressive loading of posts
 5. ✅ **Loading States**: Visual state indicators
+6. ✅ **Visual Comment Hierarchy**: **Color-coded borders for different nesting levels**
 
 ### **Technical Features:**
 
@@ -56,6 +67,7 @@ A social network application developed in React + TypeScript that allows creatin
 3. ✅ **Error Handling**: Robust API error handling
 4. ✅ **Performance**: Optimization with React Query and lazy loading
 5. ✅ **Testing**: Complete coverage of components and hooks
+6. ✅ **API Integration**: **Proper parentId handling for MockAPI compatibility**
 
 ## 🚀 **Installation and Development**
 
@@ -226,6 +238,15 @@ npm run test:coverage          # Tests with coverage report
 - **InfiniteScrollLoader**: Loader for infinite scroll
 - **useThresholdFetch**: Hook for scroll detection
 
+### **Comment System Components**
+
+- **CommentItem**: **Handles individual comments with nested replies**
+- **CommentForm**: **Form for creating comments and replies**
+- **CommentSkeleton**: **Loading state for comments**
+- **buildCommentTree**: **Utility for building comment hierarchy**
+
+## 🐳 **Docker and Deployment**
+
 ### **Build Image**
 
 ```bash
@@ -356,10 +377,17 @@ This workflow is based on the [official GitHub Actions documentation](https://do
 - `POST /post` - Create new post
 - `PUT /post/:id` - Update post
 - `DELETE /post/:id` - Delete post
-- `GET /comment` - Get comments
-- `POST /comment` - Create comment
-- `PUT /comment/:id` - Update comment
-- `DELETE /comment/:id` - Delete comment
+- `GET /post/:id/comment` - Get comments for a post
+- `POST /post/:id/comment` - Create comment or reply
+- `PUT /post/:id/comment/:commentId` - Update comment
+- `DELETE /post/:id/comment/:commentId` - Delete comment
+
+### **Comment API Features**
+
+- ✅ **Proper parentId Handling**: **Correctly manages parentId for nested comments**
+- ✅ **Orphaned Comment Support**: **Handles comments whose parent was deleted**
+- ✅ **MockAPI Compatibility**: **Works with MockAPI's parentId format**
+- ✅ **Tree Structure Building**: **Efficient comment hierarchy construction**
 
 ## 🚀 **Performance and Optimization**
 
@@ -380,6 +408,12 @@ This workflow is based on the [official GitHub Actions documentation](https://do
 - **Memoization**: React.memo where necessary
 - **Lazy Loading**: Deferred loading of heavy components
 - **Bundle Splitting**: Intelligent code division
+
+### **Comment System Performance**
+
+- ✅ **Efficient Tree Building**: **buildCommentTree utility optimized for performance**
+- ✅ **Proper State Management**: **React Query for comment caching and updates**
+- ✅ **Optimized Re-renders**: **Minimal re-renders when updating comment trees**
 
 ## 🎯 **Implemented Improvements**
 
@@ -402,7 +436,7 @@ This workflow is based on the [official GitHub Actions documentation](https://do
 - Toast system for feedback
 - Confirmation modals
 - Improved responsive design
-- Visual separators for nested comments
+- **Visual separators for nested comments with color coding**
 
 ### **Step 4: Performance** ✅
 
@@ -415,6 +449,14 @@ This workflow is based on the [official GitHub Actions documentation](https://do
 - Complete tests for all components
 - 100% test coverage
 - Optimized Vitest configuration
+
+### **Step 6: Comment System Enhancement** ✅
+
+- **Complete nested comment system with unlimited nesting levels**
+- **Proper parentId management for API compatibility**
+- **Orphaned comment handling when parent is deleted**
+- **Visual tree structure with color-coded borders**
+- **Efficient comment tree building utility**
 
 ### **Code Standards**
 
@@ -440,6 +482,7 @@ Developed as a technical challenge to demonstrate skills in:
 - **Docker and containerization**
 - **Robust API integration**
 - **Reusable component development**
+- **Complex nested data structures** and **tree management**
 
 ### **Infrastructure**
 
