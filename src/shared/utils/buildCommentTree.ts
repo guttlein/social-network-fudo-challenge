@@ -12,11 +12,11 @@ export function buildCommentTree(comments: Comment[]): CommentNode[] {
 
   // Build the tree structure
   comments.forEach(comment => {
-    if (comment.parentId) {
-      // Add child comment to parent's children array
-      map[comment.parentId]?.children.push(map[comment.id]);
+    if (comment.parentId && map[comment.parentId]) {
+      // Add child comment to parent's children array if parent exists
+      map[comment.parentId].children.push(map[comment.id]);
     } else {
-      // Add root comment to roots array
+      // Add to roots if no parentId OR if parent doesn't exist (orphaned comment)
       roots.push(map[comment.id]);
     }
   });

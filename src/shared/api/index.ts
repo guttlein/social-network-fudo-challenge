@@ -86,6 +86,7 @@ export const createComment = async (
     name: MOCK_USER.name,
     avatar: MOCK_USER.avatar,
     createdAt: new Date().toISOString(),
+    parentId: comment.parentId,
   };
 
   const { data } = await axios.post<Comment>(

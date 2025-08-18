@@ -49,7 +49,7 @@ export default function PostDetail() {
     if (!id) return;
 
     try {
-      await createComment(id, { content });
+      await createComment(id, { content, parentId: null });
       showSuccess(
         'Comment created successfully!',
         'Your comment has been posted.'
@@ -73,7 +73,8 @@ export default function PostDetail() {
       refetchComments();
       refetchPost();
       setCommentToDelete(null);
-    } catch {
+    } catch (error) {
+      console.error('Error deleting comment:', error);
       showError('Failed to delete comment', 'Please try again later.');
     }
   };
@@ -228,7 +229,9 @@ export default function PostDetail() {
                   key={comment.id}
                   comment={comment}
                   level={0}
-                  onDelete={() => setCommentToDelete(comment)}
+                  onDelete={commentToDelete =>
+                    setCommentToDelete(commentToDelete)
+                  }
                   onReply={handleReplyComment}
                   onUpdate={handleUpdateComment}
                 />

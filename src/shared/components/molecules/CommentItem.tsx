@@ -6,7 +6,7 @@ import type { CommentNode } from '@/shared/types';
 interface CommentItemProps {
   comment: CommentNode;
   level: number;
-  onDelete: (id: string) => void;
+  onDelete: (comment: CommentNode) => void;
   onReply: (parentId: string, content: string) => void;
   onUpdate: (id: string, content: string) => void;
 }
@@ -102,7 +102,7 @@ export function CommentItem({
             <Button
               variant="danger"
               size="sm"
-              onClick={() => onDelete(comment.id)}
+              onClick={() => onDelete(comment)}
               className="text-xs"
             >
               Delete
@@ -137,9 +137,18 @@ export function CommentItem({
             </div>
           </div>
         ) : (
-          <p className="text-gray-800 text-sm leading-relaxed">
-            {comment.content}
-          </p>
+          <div>
+            {/* Show orphaned comment indicator */}
+            {comment.parentId && level === 0 && (
+              <div className="mb-2 p-2 bg-gray-50 border border-gray-200 rounded text-xs text-gray-600">
+                <span className="font-medium">Note:</span> This comment was a
+                reply to another comment that has been deleted.
+              </div>
+            )}
+            <p className="text-gray-800 text-sm leading-relaxed">
+              {comment.content}
+            </p>
+          </div>
         )}
 
         {/* Reply Form */}

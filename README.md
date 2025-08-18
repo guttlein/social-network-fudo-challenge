@@ -10,7 +10,7 @@ A social network application developed in React + TypeScript that allows creatin
 - ✅ **React Router**: Navigation between pages
 - ✅ **React Query**: Optimized state management and caching
 - ✅ **TypeScript**: Complete type safety
-- ✅ **Docker**: Configured for Nginx deployment
+- ✅ **Docker**: Optimized multi-stage build with Nginx for production
 - ✅ **Scalable Architecture**: Feature-based and atomic design
 - ✅ **Quality Tools**: Configured (ESLint, Prettier, Simple Git Hooks)
 - ✅ **Complete Testing**: Vitest + React Testing Library
@@ -27,7 +27,7 @@ A social network application developed in React + TypeScript that allows creatin
 - **State Management**: TanStack React Query v5
 - **Routing**: React Router DOM v6
 - **HTTP Client**: Axios with centralized configuration
-- **Containerization**: Docker + Nginx
+- **Containerization**: Docker multi-stage + optimized Nginx
 - **Code Quality**: ESLint 9 (flat config) + Prettier + Simple Git Hooks
 - **Testing**: Vitest + React Testing Library + 70%+ Coverage
 - **Performance**: Infinite scroll with Intersection Observer
@@ -91,6 +91,22 @@ npm run format                 # Format with Prettier
 npm run test                   # Tests in watch mode
 npm run test:run               # Tests once
 npm run test:coverage          # Tests with coverage
+```
+
+### **Docker Commands**
+
+```bash
+# Build production image
+docker build -t social-network-app .
+
+# Run container
+docker run -p 3000:80 social-network-app
+
+# View container logs
+docker logs <container-id>
+
+# Stop container
+docker stop <container-id>
 ```
 
 ## 🏗 **Project Architecture**
@@ -210,8 +226,6 @@ npm run test:coverage          # Tests with coverage report
 - **InfiniteScrollLoader**: Loader for infinite scroll
 - **useThresholdFetch**: Hook for scroll detection
 
-## 🐳 **Docker**
-
 ### **Build Image**
 
 ```bash
@@ -224,7 +238,73 @@ docker build -t social-network-app .
 docker run -p 3000:80 social-network-app
 ```
 
-The application will be available at `http://localhost:3000`
+### **Verify Image**
+
+```bash
+# View available images
+docker images | grep social-network-app
+
+# View container logs
+docker logs <container-id>
+
+# Access container for debugging
+docker exec -it <container-id> sh
+```
+
+### **Nginx Configuration**
+
+The application includes an optimized Nginx configuration for SPAs:
+
+- ✅ **SPA Routing**: Complete support for React Router
+- ✅ **Gzip Compression**: Performance optimization
+- ✅ **Static Files Cache**: Appropriate cache headers
+- ✅ **Security Headers**: XSS protection, frame options
+- ✅ **MIME Types**: Correct configuration for static files
+
+### **Ports and Access**
+
+- **Internal port**: 80 (Nginx)
+- **External port**: 3000 (configurable)
+- **Access URL**: `http://localhost:3000`
+
+### **Docker Optimizations**
+
+- **Multi-stage build**: Reduces final image size
+- **Alpine Linux**: Lightweight base image
+- **Layer caching**: Docker layer optimization
+- **Production ready**: Configuration ready for production
+
+### **Docker Troubleshooting**
+
+#### **Common Issues and Solutions**
+
+**Error: "command not found: tsc" or "command not found: vite"**
+
+- ✅ **Solution**: The Dockerfile is already corrected to install all dependencies
+- ✅ **Cause**: devDependencies are needed for the build
+
+**Error: "Cannot find module"**
+
+- ✅ **Solution**: Verify that `package-lock.json` is in the repository
+- ✅ **Cause**: Dependencies not synchronized
+
+**Error: "Permission denied" in Nginx**
+
+- ✅ **Solution**: The Dockerfile already handles permissions correctly
+- ✅ **Cause**: Permission issues with static files
+
+#### **Debugging Commands**
+
+```bash
+# View detailed build logs
+docker build -t social-network-app . --progress=plain
+
+# Run with real-time logs
+docker run -p 3000:80 social-network-app
+
+# Verify that the image was built correctly
+docker run --rm social-network-app nginx -t
+```
 
 ## 🚀 **CI/CD Pipeline**
 
