@@ -137,7 +137,7 @@ describe('CommentItem', () => {
       const deleteButton = screen.getByText('Delete');
       fireEvent.click(deleteButton);
 
-      expect(mockProps.onDelete).toHaveBeenCalledWith('1');
+      expect(mockProps.onDelete).toHaveBeenCalledWith(mockComment);
     });
   });
 
@@ -165,6 +165,118 @@ describe('CommentItem', () => {
       render(<CommentItem {...longProps} />);
 
       expect(screen.getByText('A'.repeat(500))).toBeDefined();
+    });
+  });
+
+  describe('Orphaned Comments (Parent Deleted)', () => {
+    it('shows orphaned comment indicator when comment has parentId but is at level 0', () => {
+      const orphanedComment = {
+        ...mockComment,
+        id: '2',
+        parentId: 'deleted-parent-id',
+        content: 'This is an orphaned reply',
+      };
+      const orphanedProps = {
+        ...mockProps,
+        comment: orphanedComment,
+        level: 0,
+      };
+
+      render(<CommentItem {...orphanedProps} />);
+
+      // Should show the orphaned comment indicator
+      expect(
+        screen.getByText(
+          /This comment was a reply to another comment that has been deleted/
+        )
+      ).toBeDefined();
+      expect(screen.getByText('This is an orphaned reply')).toBeDefined();
+    });
+
+    it('does not show orphaned comment indicator when comment has parentId but is not at level 0', () => {
+      const nestedComment = {
+        ...mockComment,
+        id: '2',
+        parentId: 'parent-id',
+        content: 'This is a nested reply',
+      };
+      const nestedProps = {
+        ...mockProps,
+        comment: nestedComment,
+        level: 1,
+      };
+
+      render(<CommentItem {...nestedProps} />);
+
+      // Should NOT show the orphaned comment indicator for nested comments
+      expect(
+        screen.queryByText(
+          /This comment was a reply to another comment that has been deleted/
+        )
+      ).toBeNull();
+      expect(screen.getByText('This is a nested reply')).toBeDefined();
+    });
+
+    it('does not show orphaned comment indicator when comment has no parentId', () => {
+      const rootComment = {
+        ...mockComment,
+        id: '1',
+        parentId: null,
+        content: 'This is a root comment',
+      };
+      const rootProps = {
+        ...mockProps,
+        comment: rootComment,
+        level: 0,
+      };
+
+      render(<CommentItem {...rootProps} />);
+
+      // Should NOT show the orphaned comment indicator for root comments
+      expect(
+        screen.queryByText(
+          /This comment was a reply to another comment that has been deleted/
+        )
+      ).toBeNull();
+      expect(screen.getByText('This is a root comment')).toBeDefined();
+    });
+
+    it('maintains all functionality for orphaned comments', () => {
+      const orphanedComment = {
+        ...mockComment,
+        id: '2',
+        parentId: 'deleted-parent-id',
+        content: 'This is an orphaned reply',
+      };
+      const orphanedProps = {
+        ...mockProps,
+        comment: orphanedComment,
+        level: 0,
+      };
+
+      render(<CommentItem {...orphanedProps} />);
+
+      // Should still have all action buttons
+      expect(screen.getByText('Reply')).toBeDefined();
+      expect(screen.getByText('Edit')).toBeDefined();
+      expect(screen.getByText('Delete')).toBeDefined();
+
+      // Should still be able to reply
+      const replyButton = screen.getByText('Reply');
+      fireEvent.click(replyButton);
+      expect(screen.getByPlaceholderText('Write a reply...')).toBeDefined();
+
+      // Should still be able to edit
+      const editButton = screen.getByText('Edit');
+      fireEvent.click(editButton);
+      expect(
+        screen.getByDisplayValue('This is an orphaned reply')
+      ).toBeDefined();
+
+      // Should still be able to delete
+      const deleteButton = screen.getByText('Delete');
+      fireEvent.click(deleteButton);
+      expect(mockProps.onDelete).toHaveBeenCalledWith(orphanedComment);
     });
   });
 });
