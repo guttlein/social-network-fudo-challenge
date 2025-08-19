@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   PostSkeleton,
   SkeletonList,
@@ -23,23 +23,21 @@ export default function PostDetail() {
   const { id } = useParams<{ id: string }>();
   const [commentToDelete, setCommentToDelete] = useState<Comment | null>(null);
   const { showSuccess, showError } = useToastActions();
+  const queryClient = useQueryClient();
 
   const {
     data: post,
     isLoading: isPostLoading,
     error: postError,
-    refetch: refetchPost,
   } = useQuery<Post | null>({
     queryKey: ['post', id],
     queryFn: () => getSinglePost(id!),
     enabled: !!id,
   });
 
-  const {
-    data: comments = [],
-    isLoading: isCommentsLoading,
-    refetch: refetchComments,
-  } = useQuery<Comment[]>({
+  const { data: comments = [], isLoading: isCommentsLoading } = useQuery<
+    Comment[]
+  >({
     queryKey: ['comments', id],
     queryFn: () => getComments(id!),
     enabled: !!id,
@@ -54,8 +52,9 @@ export default function PostDetail() {
         'Comment created successfully!',
         'Your comment has been posted.'
       );
-      refetchComments();
-      refetchPost();
+      // Invalidate cache instead of refetch for better performance
+      queryClient.invalidateQueries({ queryKey: ['comments', id] });
+      queryClient.invalidateQueries({ queryKey: ['post', id] });
     } catch {
       showError('Failed to create comment', 'Please try again later.');
     }
@@ -70,8 +69,9 @@ export default function PostDetail() {
         'Comment deleted successfully!',
         'Your comment has been removed.'
       );
-      refetchComments();
-      refetchPost();
+      // Invalidate cache instead of refetch for better performance
+      queryClient.invalidateQueries({ queryKey: ['comments', id] });
+      queryClient.invalidateQueries({ queryKey: ['post', id] });
       setCommentToDelete(null);
     } catch {
       showError('Failed to delete comment', 'Please try again later.');
@@ -87,7 +87,8 @@ export default function PostDetail() {
         'Comment updated successfully!',
         'Your comment has been updated.'
       );
-      refetchComments();
+      // Invalidate cache instead of refetch for better performance
+      queryClient.invalidateQueries({ queryKey: ['comments', id] });
     } catch {
       showError('Failed to update comment', 'Please try again later.');
     }
@@ -99,8 +100,9 @@ export default function PostDetail() {
     try {
       await createComment(id, { content, parentId });
       showSuccess('Reply posted successfully!', 'Your reply has been posted.');
-      refetchComments();
-      refetchPost();
+      // Invalidate cache instead of refetch for better performance
+      queryClient.invalidateQueries({ queryKey: ['comments', id] });
+      queryClient.invalidateQueries({ queryKey: ['post', id] });
     } catch {
       showError('Failed to post reply', 'Please try again later.');
     }

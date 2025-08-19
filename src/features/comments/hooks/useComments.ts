@@ -14,6 +14,9 @@ export function useCreateComment(postId: string) {
         ['comments', postId],
         (oldComments = []) => [...oldComments, createdComment]
       );
+
+      // Also invalidate post cache to refresh comment count and metadata
+      queryClient.invalidateQueries({ queryKey: ['post', postId] });
     },
   });
 }
@@ -30,6 +33,9 @@ export function useDeleteComment(postId: string) {
         (oldComments = []) =>
           oldComments.filter(comment => comment.id !== deletedComment.id)
       );
+
+      // Also invalidate post cache to refresh comment count and metadata
+      queryClient.invalidateQueries({ queryKey: ['post', postId] });
     },
   });
 }
@@ -54,6 +60,9 @@ export function useUpdateComment(postId: string) {
             comment.id === updatedComment.id ? updatedComment : comment
           )
       );
+
+      // Also invalidate post cache to refresh comment count and metadata
+      queryClient.invalidateQueries({ queryKey: ['post', postId] });
     },
   });
 }

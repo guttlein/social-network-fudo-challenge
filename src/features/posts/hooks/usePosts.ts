@@ -7,8 +7,18 @@ export function useCreatePost() {
 
   return useMutation<Post, Error, Partial<Post>>({
     mutationFn: newPost => createPost(newPost),
-    onSuccess: () => {
+    onSuccess: createdPost => {
+      // Invalidate posts cache to refresh the list
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+
+      // Invalidate infinite posts cache
+      queryClient.invalidateQueries({ queryKey: ['posts', 'infinite'] });
+
+      // Set the new post data in cache to ensure fresh data
+      queryClient.setQueryData(['post', createdPost.id], createdPost);
+
+      // Clear any stale comments cache for this post
+      queryClient.removeQueries({ queryKey: ['comments', createdPost.id] });
     },
   });
 }
@@ -33,6 +43,12 @@ export function useDeletePost() {
       // Invalidate posts cache
       queryClient.invalidateQueries({ queryKey: ['posts'] });
 
+      // Invalidate infinite posts cache
+      queryClient.invalidateQueries({ queryKey: ['posts', 'infinite'] });
+
+      // Remove the specific post from cache to prevent stale data
+      queryClient.removeQueries({ queryKey: ['post', postId] });
+
       // Also invalidate comments cache for this post to prevent orphaned comments from appearing
       queryClient.invalidateQueries({ queryKey: ['comments', postId] });
 
@@ -47,8 +63,17 @@ export function useUpdatePost() {
 
   return useMutation<Post, Error, { postId: string; post: Partial<Post> }>({
     mutationFn: ({ postId, post }) => updatePost(postId, post),
-    onSuccess: (_, { postId }) => {
+    onSuccess: (updatedPost, { postId }) => {
+      // Invalidate posts cache to refresh the list
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+
+      // Invalidate infinite posts cache
+      queryClient.invalidateQueries({ queryKey: ['posts', 'infinite'] });
+
+      // Set fresh data for the specific post
+      queryClient.setQueryData(['post', postId], updatedPost);
+
+      // Invalidate post cache to ensure consistency
       queryClient.invalidateQueries({ queryKey: ['post', postId] });
     },
   });
