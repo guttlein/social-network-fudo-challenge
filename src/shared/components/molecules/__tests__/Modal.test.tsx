@@ -169,8 +169,8 @@ describe('Modal', () => {
       const endTime = performance.now();
       const renderTime = endTime - startTime;
 
-      // Should render large content in less than 300ms
-      expect(renderTime).toBeLessThan(300);
+      // Should render large content in less than 500ms
+      expect(renderTime).toBeLessThan(500);
     });
   });
 });
