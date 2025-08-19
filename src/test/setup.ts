@@ -1,6 +1,4 @@
-import './test-utils';
-
-// Mock de IntersectionObserver para tests
+// Mock IntersectionObserver for tests
 Object.defineProperty(window, 'IntersectionObserver', {
   writable: true,
   configurable: true,
@@ -12,7 +10,7 @@ Object.defineProperty(window, 'IntersectionObserver', {
   },
 });
 
-// Mock de ResizeObserver para tests
+// Mock ResizeObserver for tests
 Object.defineProperty(window, 'ResizeObserver', {
   writable: true,
   configurable: true,
