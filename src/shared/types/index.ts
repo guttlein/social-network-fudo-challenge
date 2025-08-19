@@ -21,6 +21,7 @@ export interface Comment {
 // Comment with nested children for tree structure
 export interface CommentNode extends Comment {
   children: CommentNode[];
+  isOrphaned?: boolean;
 }
 
 export interface User {

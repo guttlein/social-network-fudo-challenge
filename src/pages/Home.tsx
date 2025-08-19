@@ -9,13 +9,23 @@ import {
 import { useInfinitePosts } from '@/shared/hooks/useInfinitePosts';
 import { useThresholdFetch } from '@/shared/hooks/useThresholdFetch';
 import { useToastActions } from '@/shared/hooks/useToastActions';
-import { createPost, deletePost, updatePost } from '@/shared/api';
+import {
+  useCreatePost,
+  useDeletePost,
+  useUpdatePost,
+} from '@/features/posts/hooks/usePosts';
 import type { Post } from '@/shared/types';
 
 export default function Home() {
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [postToDelete, setPostToDelete] = useState<Post | null>(null);
   const [postToEdit, setPostToEdit] = useState<Post | null>(null);
+  const [deleteProgress, setDeleteProgress] = useState<{
+    total: number;
+    deleted: number;
+    current: string;
+  } | null>(null);
+  const [isDeleteCompleted, setIsDeleteCompleted] = useState(false);
   const { showSuccess, showError } = useToastActions();
 
   const {
@@ -27,6 +37,11 @@ export default function Home() {
     refetch: refreshPosts,
   } = useInfinitePosts();
 
+  // Use the hooks instead of direct API calls
+  const createPostMutation = useCreatePost();
+  const deletePostMutation = useDeletePost();
+  const updatePostMutation = useUpdatePost();
+
   const targetRef = useThresholdFetch(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -36,7 +51,7 @@ export default function Home() {
   const handleCreatePost = async (data: { title: string; content: string }) => {
     try {
       setIsCreatingPost(true);
-      await createPost(data);
+      await createPostMutation.mutateAsync(data);
       showSuccess(
         'Post created successfully!',
         'Your post has been published.'
@@ -51,12 +66,31 @@ export default function Home() {
 
   const handleDeletePost = async (post: Post) => {
     try {
-      await deletePost(post.id);
-      showSuccess('Post deleted successfully!', 'Your post has been removed.');
+      setDeleteProgress({
+        total: 0,
+        deleted: 0,
+        current: 'Starting deletion...',
+      });
+      setIsDeleteCompleted(false);
+
+      await deletePostMutation.mutateAsync({
+        postId: post.id,
+        onProgress: progress => {
+          setDeleteProgress(progress);
+        },
+      });
+
+      setIsDeleteCompleted(true);
+      setDeleteProgress({
+        total: 0,
+        deleted: 0,
+        current: 'Post deleted successfully!',
+      });
       refreshPosts();
-      setPostToDelete(null);
     } catch {
       showError('Failed to delete post', 'Please try again later.');
+      setDeleteProgress(null);
+      setIsDeleteCompleted(false);
     }
   };
 
@@ -64,13 +98,22 @@ export default function Home() {
     if (!postToEdit) return;
 
     try {
-      await updatePost(postToEdit.id, data);
+      await updatePostMutation.mutateAsync({
+        postId: postToEdit.id,
+        post: data,
+      });
       showSuccess('Post updated successfully!', 'Your post has been modified.');
       refreshPosts();
       setPostToEdit(null);
     } catch {
       showError('Failed to update post', 'Please try again later.');
     }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setPostToDelete(null);
+    setDeleteProgress(null);
+    setIsDeleteCompleted(false);
   };
 
   const posts = data?.pages.flatMap(page => page.posts) || [];
@@ -139,11 +182,19 @@ export default function Home() {
       {/* Delete Confirmation Modal */}
       <ConfirmDeleteModal
         isOpen={!!postToDelete}
-        onClose={() => setPostToDelete(null)}
-        onConfirm={() => postToDelete && handleDeletePost(postToDelete)}
+        onClose={handleCloseDeleteModal}
+        onConfirm={async () => {
+          if (postToDelete) {
+            await handleDeletePost(postToDelete);
+          }
+        }}
         title="Delete Post"
-        message={`Are you sure you want to delete this post? This action cannot be undone.`}
+        message={`Are you sure you want to delete this post? This action cannot be undone and will also delete all associated comments.`}
         confirmText="Delete Post"
+        isDeleting={deletePostMutation.isPending}
+        isDeletingComments={deleteProgress !== null && deleteProgress.total > 0}
+        commentsProgress={deleteProgress || undefined}
+        isCompleted={isDeleteCompleted}
       />
 
       {/* Edit Post Modal */}

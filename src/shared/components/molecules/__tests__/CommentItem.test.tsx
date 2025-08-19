@@ -170,11 +170,12 @@ describe('CommentItem', () => {
 
   describe('Orphaned Comments (Parent Deleted)', () => {
     it('shows orphaned comment indicator when comment has parentId but is at level 0', () => {
-      const orphanedComment = {
+      const orphanedComment: CommentNode = {
         ...mockComment,
         id: '2',
         parentId: 'deleted-parent-id',
         content: 'This is an orphaned reply',
+        isOrphaned: true,
       };
       const orphanedProps = {
         ...mockProps,
@@ -194,11 +195,12 @@ describe('CommentItem', () => {
     });
 
     it('does not show orphaned comment indicator when comment has parentId but is not at level 0', () => {
-      const nestedComment = {
+      const nestedComment: CommentNode = {
         ...mockComment,
         id: '2',
         parentId: 'parent-id',
         content: 'This is a nested reply',
+        isOrphaned: false,
       };
       const nestedProps = {
         ...mockProps,
@@ -218,11 +220,12 @@ describe('CommentItem', () => {
     });
 
     it('does not show orphaned comment indicator when comment has no parentId', () => {
-      const rootComment = {
+      const rootComment: CommentNode = {
         ...mockComment,
         id: '1',
         parentId: null,
         content: 'This is a root comment',
+        isOrphaned: false,
       };
       const rootProps = {
         ...mockProps,
@@ -242,11 +245,12 @@ describe('CommentItem', () => {
     });
 
     it('maintains all functionality for orphaned comments', () => {
-      const orphanedComment = {
+      const orphanedComment: CommentNode = {
         ...mockComment,
         id: '2',
         parentId: 'deleted-parent-id',
         content: 'This is an orphaned reply',
+        isOrphaned: true,
       };
       const orphanedProps = {
         ...mockProps,

@@ -12,12 +12,20 @@ export function buildCommentTree(comments: Comment[]): CommentNode[] {
 
   // Build the tree structure
   comments.forEach(comment => {
-    if (comment.parentId && map[comment.parentId]) {
+    const node = map[comment.id];
+    const hasParentId = Boolean(comment.parentId);
+    const parentExists =
+      hasParentId && Boolean(map[comment.parentId as string]);
+
+    if (hasParentId && parentExists) {
       // Add child comment to parent's children array if parent exists
-      map[comment.parentId].children.push(map[comment.id]);
+      map[comment.parentId as string].children.push(node);
     } else {
       // Add to roots if no parentId OR if parent doesn't exist (orphaned comment)
-      roots.push(map[comment.id]);
+      if (hasParentId && !parentExists) {
+        node.isOrphaned = true;
+      }
+      roots.push(node);
     }
   });
 

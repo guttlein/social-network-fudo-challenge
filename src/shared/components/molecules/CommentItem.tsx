@@ -139,7 +139,7 @@ export function CommentItem({
         ) : (
           <div>
             {/* Show orphaned comment indicator */}
-            {comment.parentId && level === 0 && (
+            {comment.isOrphaned && (
               <div className="mb-2 p-2 bg-gray-50 border border-gray-200 rounded text-xs text-gray-600">
                 <span className="font-medium">Note:</span> This comment was a
                 reply to another comment that has been deleted.
