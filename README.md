@@ -18,7 +18,7 @@ Vercel website: `https://social-network-fudo-challenge.vercel.app/`
 - ✅ **Docker**: Optimized multi-stage build with Nginx for production
 - ✅ **Scalable Architecture**: Feature-based and atomic design
 - ✅ **Quality Tools**: Configured (ESLint, Prettier, Simple Git Hooks)
-- ✅ **Complete Testing**: Vitest + React Testing Library + 83 tests passing
+- ✅ **Complete Testing**: Vitest + React Testing Library + 79 tests passing
 - ✅ **Skeleton Loaders**: UX improvements for posts and comments
 - ✅ **Toast System**: User feedback system
 - ✅ **Confirmation Modals**: For destructive actions with progress tracking
@@ -35,7 +35,7 @@ Vercel website: `https://social-network-fudo-challenge.vercel.app/`
 - **HTTP Client**: Axios with centralized configuration
 - **Containerization**: Docker multi-stage + optimized Nginx
 - **Code Quality**: ESLint 9 (flat config) + Prettier + Simple Git Hooks
-- **Testing**: Vitest + React Testing Library + 83 tests passing
+- **Testing**: Vitest + React Testing Library + 79 tests passing
 - **Performance**: Infinite scroll with Intersection Observer
 
 ## 📱 **Implemented Functionality**
@@ -218,7 +218,7 @@ src/
 - **CommentItem.test.tsx**: 13/13 tests ✅
 - **Home.test.tsx**: 2/2 tests ✅
 - **ConfirmDeleteModal.test.tsx**: 4/4 tests ✅ (Progress and completion states)
-- **Total**: 83/83 tests passing (100%)
+- **Total**: 79/79 tests passing (100%)
 
 ### **Running Tests**
 
