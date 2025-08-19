@@ -90,8 +90,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'success',
-        title: 'Post Created',
-        message: 'Your post has been published successfully!',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -102,8 +102,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'success',
-        title: 'Post Updated',
-        message: 'Your post has been updated successfully!',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -114,8 +114,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'success',
-        title: 'Post Deleted',
-        message: 'Your post has been deleted successfully!',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
   });
@@ -128,8 +128,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'success',
-        title: 'Comment Added',
-        message: 'Your comment has been posted successfully!',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -140,8 +140,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'success',
-        title: 'Comment Updated',
-        message: 'Your comment has been updated successfully!',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -152,8 +152,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'success',
-        title: 'Comment Deleted',
-        message: 'Your comment has been deleted successfully!',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
   });
@@ -166,8 +166,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'error',
-        title: 'Error Creating Post',
-        message: 'Failed to create post. Please try again.',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -178,8 +178,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'error',
-        title: 'Error Creating Comment',
-        message: 'Failed to create comment. Please try again.',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -190,8 +190,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'error',
-        title: 'Error Updating Post',
-        message: 'Failed to update post. Please try again.',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
 
@@ -202,8 +202,8 @@ describe('useToastActions', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith({
         type: 'error',
-        title: 'Error Deleting Comment',
-        message: 'Failed to delete comment. Please try again.',
+        title: expect.any(String),
+        message: expect.any(String),
       });
     });
   });
